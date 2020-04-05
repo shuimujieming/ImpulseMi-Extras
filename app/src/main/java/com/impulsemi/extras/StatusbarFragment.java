@@ -41,12 +41,32 @@ public class StatusbarFragment extends PreferenceFragment implements OnPreferenc
         CheckBoxPreference search_show = (CheckBoxPreference) findPreference("search_show");
         CheckBoxPreference drive_mode = (CheckBoxPreference) findPreference("drive_mode");
         CheckBoxPreference time_show_long = (CheckBoxPreference) findPreference("time_show_long");
+        CheckBoxPreference time_s = (CheckBoxPreference) findPreference("time_s");
+        CheckBoxPreference statusbar_hide = (CheckBoxPreference) findPreference("statusbar_hide");
         //android.intent.action.USER_SWITCHED->原地去世android.net.conn.CONNECTIVITY_CHANGE
         //com.miui.app.ExtraStatusBarManager.TRIGGER_TOGGLE_LOCK锁屏
         //my.settings.REFRESH_STATUSBAR刷新状态栏
         //android.intent.action.SIM_STATE_CHANGED手机卡刷新
         //com.miui.app.ExtraStatusBarManager.action_enter_drive_mode进入开车模式
         //com.miui.app.ExtraStatusBarManager.action_leave_drive_mode推出开车模式
+
+
+        if(key.equals("time_s"))
+        {
+            ContentResolver contentResolver = getContext().getContentResolver();
+            if (time_s.isChecked())
+            {
+                Settings.System.putInt(contentResolver,"impulse_status_show_time_second",1);
+
+            }
+            else
+            {
+                Settings.System.putInt(contentResolver,"impulse_status_show_time_second",0);
+
+            }
+            ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui",true);
+
+        }
 
         if(key.equals("time_show_long"))
         {
@@ -63,27 +83,34 @@ public class StatusbarFragment extends PreferenceFragment implements OnPreferenc
         }
         if (key.equals("statusbar_hide"))
         {
-            if ((new File("/tmp/hide2").exists()))
+            if (statusbar_hide.isChecked())
             {
-                String[] commands = new String[]{"mount -o rw,remount /", "mount -o rw,remount /system", "mount -o rw,remount /vendor", "mount -o rw,remount /vendor/etc", "mount -o rw,remount /system/vendor/etc", "mount -o rw,remount /system/system", "mount -o rw,remount /system/etc", "mount -o rw,remount /system_root/system", "mkdir /tmp", "chmod -R 777 /tmp", "rm -rf /tmp/hide2", "echo 1 >/tmp/hide1", "settings put global policy_control immersive.status=*", "sync"};
-                ShellUtils.execCommand(commands, true);
-
-            }
-            else
-            {
-                if ((new File("/tmp/hide1").exists()))
+                if ((new File("/tmp/hide2").exists()))
                 {
-                    String[] commands = new String[]{"mount -o rw,remount /", "mount -o rw,remount /system", "mount -o rw,remount /vendor", "mount -o rw,remount /vendor/etc", "mount -o rw,remount /system/vendor/etc", "mount -o rw,remount /system/system", "mount -o rw,remount /system/etc", "mount -o rw,remount /system_root/system", "mkdir /tmp", "chmod -R 777 /tmp", "rm -rf /tmp/hide1", "echo 1 >/tmp/hide2", "settings put global policy_control null", "sync"};
+                    String[] commands = new String[]{"mount -o rw,remount /", "mount -o rw,remount /system", "mount -o rw,remount /vendor", "mount -o rw,remount /vendor/etc", "mount -o rw,remount /system/vendor/etc", "mount -o rw,remount /system/system", "mount -o rw,remount /system/etc", "mount -o rw,remount /system_root/system", "mkdir /tmp", "chmod -R 777 /tmp", "rm -rf /tmp/hide2", "echo 1 >/tmp/hide1", "settings put global policy_control immersive.status=*", "sync"};
                     ShellUtils.execCommand(commands, true);
 
                 }
+
                 else
                 {
                     String[] commands = new String[]{"mount -o rw,remount /", "mount -o rw,remount /system", "mount -o rw,remount /vendor", "mount -o rw,remount /vendor/etc", "mount -o rw,remount /system/vendor/etc", "mount -o rw,remount /system/system", "mount -o rw,remount /system/etc", "mount -o rw,remount /system_root/system", "mkdir /tmp", "chmod -R 777 /tmp", "echo 1 >/tmp/hide1", "settings put global policy_control immersive.status=*", "sync"};
                     ShellUtils.execCommand(commands, true);
 
                 }
+
             }
+            else {
+                if ((new File("/tmp/hide1").exists()))
+                {
+                    String[] commands = new String[]{"mount -o rw,remount /", "mount -o rw,remount /system", "mount -o rw,remount /vendor", "mount -o rw,remount /vendor/etc", "mount -o rw,remount /system/vendor/etc", "mount -o rw,remount /system/system", "mount -o rw,remount /system/etc", "mount -o rw,remount /system_root/system", "mkdir /tmp", "chmod -R 777 /tmp", "rm -rf /tmp/hide1", "echo 1 >/tmp/hide2", "settings put global policy_control null", "sync"};
+                    ShellUtils.execCommand(commands, true);
+
+                }
+
+            }
+
+
         }
 
         if (key.equals("network_interval"))

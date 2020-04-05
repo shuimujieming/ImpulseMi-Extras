@@ -2,6 +2,7 @@ package com.impulsemi.extras;
 
 import android.app.ActivityManager;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
+import android.provider.Settings;
 import android.text.SpannableString;
 import android.text.method.DigitsKeyListener;
 import android.widget.EditText;
@@ -123,11 +125,23 @@ private ListPreference desktop_layout = null;
         key = preference.getKey();
         CheckBoxPreference power_advanced = (CheckBoxPreference) findPreference("power_advanced");
         CheckBoxPreference brevent_active = (CheckBoxPreference) findPreference("brevent_active");
+        CheckBoxPreference charge_show = (CheckBoxPreference) findPreference("charge_show");
 
 
 
-
-
+        if (key.equals("charge_show"))
+        {
+            ContentResolver contentResolver = getContext().getContentResolver();
+            if (charge_show.isChecked())
+            {
+                Settings.System.putInt(contentResolver,"impulse_charge_show",1);
+            }
+            else
+            {
+                Settings.System.putInt(contentResolver,"impulse_charge_show",0);
+            }
+            ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui",true);
+        }
         if(key.equals("notice_diary"))
         {
             try {

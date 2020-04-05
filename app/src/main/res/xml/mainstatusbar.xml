@@ -20,7 +20,7 @@
             android:title="状态栏风格切换"
             android:key="statusbar_style"
             />
-        <Preference
+        <CheckBoxPreference
             android:icon="@mipmap/ic_statusbar_hide"
             android:title="状态栏隐藏"
             android:key="statusbar_hide"/>

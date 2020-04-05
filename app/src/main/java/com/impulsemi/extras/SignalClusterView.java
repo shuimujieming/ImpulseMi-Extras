@@ -20,7 +20,9 @@ public abstract class SignalClusterView extends LinearLayout
         impulsemiSignalView();
         impulsemiRefresh();
        Getsystem.isshowdoublesignal(getContext());
+       Settings.System.getInt(getContext().getContentResolver(),"dad");
     }
+
 
     //注册Broadcast
     public void impulsemiRefresh()
