@@ -1,4 +1,5 @@
 package com.impulsemi.extras;
+import android.app.admin.DevicePolicyManager;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,8 +14,6 @@ import androidx.annotation.Nullable;
 import java.io.File;
 
 public class StatusbarFragment extends PreferenceFragment implements OnPreferenceChangeListener {
-
-
 
 
     @Override
@@ -41,6 +40,7 @@ public class StatusbarFragment extends PreferenceFragment implements OnPreferenc
         CheckBoxPreference statusbar_style = (CheckBoxPreference) findPreference("statusbar_style");
         CheckBoxPreference search_show = (CheckBoxPreference) findPreference("search_show");
         CheckBoxPreference drive_mode = (CheckBoxPreference) findPreference("drive_mode");
+        CheckBoxPreference time_show_long = (CheckBoxPreference) findPreference("time_show_long");
         //android.intent.action.USER_SWITCHED->原地去世android.net.conn.CONNECTIVITY_CHANGE
         //com.miui.app.ExtraStatusBarManager.TRIGGER_TOGGLE_LOCK锁屏
         //my.settings.REFRESH_STATUSBAR刷新状态栏
@@ -48,6 +48,19 @@ public class StatusbarFragment extends PreferenceFragment implements OnPreferenc
         //com.miui.app.ExtraStatusBarManager.action_enter_drive_mode进入开车模式
         //com.miui.app.ExtraStatusBarManager.action_leave_drive_mode推出开车模式
 
+        if(key.equals("time_show_long"))
+        {
+            ContentResolver contentResolver = getContext().getContentResolver();
+            if (time_show_long.isChecked())
+            {
+                Settings.System.putInt(contentResolver,"status_bar_time_show_long",1);
+            }
+            else
+            {
+                Settings.System.putInt(contentResolver,"status_bar_time_show_long",0);
+            }
+            ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui",true);
+        }
         if (key.equals("statusbar_hide"))
         {
             if ((new File("/tmp/hide2").exists()))

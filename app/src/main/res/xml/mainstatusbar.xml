@@ -52,6 +52,9 @@
             android:defaultValue="0"
             android:key="time_s"
             android:title="时间显秒" />
+            <CheckBoxPreference
+                android:title="时钟常显"
+                android:key="time_show_long"/>
             </PreferenceCategory>
         <PreferenceCategory
            android:title="网速设置" >
