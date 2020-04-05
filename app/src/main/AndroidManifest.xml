@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    coreApp="true"
+    package="com.impulsemi.extras"
+    android:compileSdkVersion="28"
+    android:compileSdkVersionCodename="9"
+    android:sharedUserId="android.uid.system"
+    >
+    <uses-permission android:name="android.permission.FORCE_STOP_PACKAGES"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".WifiActivity"
+            android:excludeFromRecents="true">
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:excludeFromRecents="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <!--
+                <data android:host="MainActivity" android:scheme="com.ImpulseMi.advancedsettings" />
+               这条属性可以让启动app入口Activity申明为由接收隐士的Intent来启动，这样自然也就不会显示图标了
+               -->
+<!--                <data android:host="MainActivity" android:scheme="com.impulsemi.extras"-->
+<!--                    tools:ignore="AppLinkUrlError" />-->
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

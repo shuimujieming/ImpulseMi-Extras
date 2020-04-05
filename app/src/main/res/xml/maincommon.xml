@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layoutDirection="locale"
+    android:title="ImpulseMi Extras"
+    android:key="common_options"
+    >
+    <PreferenceCategory
+        android:key="system_content"
+        android:title="系统优化">
+        <CheckBoxPreference
+            android:icon="@mipmap/ic_power"
+            android:defaultValue="0"
+            android:key="power_advanced"
+            android:title="高级电源"
+            android:summaryOn="已开启"
+            android:summaryOff="已关闭" />
+        <CheckBoxPreference
+            android:icon="@mipmap/ic_brevent"
+            android:defaultValue="0"
+            android:key="brevent_active"
+            android:title="黑域"
+            android:summaryOn="已激活"
+            android:summaryOff="已关闭" />
+    </PreferenceCategory>
+ <PreferenceCategory
+     android:title="电池设置">
+
+     <Preference
+         android:icon="@mipmap/ic_power_mask"
+         android:title="电量伪装"
+         android:key="power_mask"/>
+     <Preference
+         android:icon="@mipmap/ic_power_save"
+         android:title="极致省电模式"
+         android:key="power_save"
+         >
+         <!-- android:targetPackage是应用程序的包名，而android:targetClass的路径在子包下的类 -->
+         <!-- android:targetPackage设置为子包，运行时则找不到Activity -->
+         <intent
+             android:action="ACTION_A_INTENT"
+             android:targetPackage="com.miui.powerkeeper"
+             android:targetClass="com.miui.powerkeeper.ui.ExtremePowerEntryActivity">
+         </intent>
+     </Preference>
+     <Preference
+         android:icon="@mipmap/ic_power_line"
+         android:title="耗电折线图"
+         android:key="power_details">
+         <intent
+             android:action="ACTION_A_INTENT"
+             android:targetPackage="com.miui.securitycenter"
+             android:targetClass="com.miui.powercenter.batteryhistory.BatteryHistoryDetailActivity">
+         </intent>
+     </Preference>
+     <Preference
+         android:icon="@mipmap/ic_power_info"
+         android:title="电池信息"
+         android:key="power_info">
+         <intent
+             android:action="ACTION_A_INTENT"
+             android:targetPackage="com.android.settings"
+             android:targetClass="com.android.settings.BatteryInfo">
+         </intent>
+     </Preference>
+
+ </PreferenceCategory>
+    <PreferenceCategory
+        android:title="桌面修改">
+        <ListPreference
+            android:icon="@mipmap/ic_desktop_layout"
+            android:title="桌面布局"
+            android:defaultValue="1"
+            android:entries="@array/desktop_layout"
+            android:entryValues="@array/desktop_values"
+            android:key="desktop_layout" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="其它功能">
+        <Preference
+            android:icon="@mipmap/ic_monitor_dpi"
+            android:title="修改屏幕密度"
+            android:key="screen_dpi"/>
+
+        <Preference
+            android:icon="@mipmap/ic_notice"
+            android:title="通知日志"
+            android:key="notice_diary"/>
+        <Preference
+            android:icon="@mipmap/ic_wifi_password"
+            android:title="WIFI密码查看"
+            android:key="wifi_look">
+            <intent
+                android:action="ACTION_A_INTENT"
+                android:targetPackage="com.impulsemi.extras"
+                android:targetClass="com.impulsemi.extras.WifiActivity">
+            </intent>
+        </Preference>
+    </PreferenceCategory>
+</PreferenceScreen>

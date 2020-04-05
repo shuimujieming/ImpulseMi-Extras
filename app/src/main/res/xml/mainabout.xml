@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+	android:title="ImpulseMi Extras"
+	android:key="about_options"
+	>
+
+	<PreferenceCategory android:key="relative" >
+		<Preference
+			android:key="ming"
+			android:layout="@layout/teamtext"
+			/>
+		<Preference
+			android:title="Whitegold"
+			android:key="whitegold"
+			android:icon="@mipmap/ic_team_whitegold"
+			android:summary="队长 / 工具人">
+			<intent android:action="android.intent.action.VIEW"
+				android:data="http://www.coolapk.com/u/1533931" />
+		</Preference>
+		<Preference
+			android:title="JKL丶"
+			android:key="jkl"
+			android:icon="@mipmap/ic_team_jkl"
+			android:summary="理事">
+			<intent android:action="android.intent.action.VIEW"
+				android:data="http://www.coolapk.com/u/2096972" />
+		</Preference>
+		<Preference
+		android:title="SAHA妖小孽"
+		android:key="yaoxiaonie"
+		android:icon="@mipmap/ic_team_yaoxiaonie"
+		android:summary="工具人">
+		<intent android:action="android.intent.action.VIEW"
+			android:data="http://www.coolapk.com/u/2369402" />
+		</Preference>
+		<Preference
+			android:title="WRTVD"
+			android:key="wrtvd"
+			android:icon="@mipmap/ic_team_wrtvd"
+			android:summary="工具人">
+		</Preference>
+		<Preference
+			android:title="XY丶血影"
+			android:key="xy"
+			android:icon="@mipmap/ic_team_xy"
+			android:summary="协助管理">
+			<intent android:action="android.intent.action.VIEW"
+				android:data="http://www.coolapk.com/u/2833706" />
+		</Preference>
+		<Preference
+			android:title="世纪末雪"
+			android:key="xiaojiejie"
+			android:icon="@mipmap/ic_team_littlesister"
+			android:summary="内核编译">
+			<intent android:action="android.intent.action.VIEW"
+				android:data="http://www.coolapk.com/u/2114437" />
+		</Preference>
+		<Preference
+			android:title="水木皆Ming"
+			android:key="shuimujieming"
+			android:icon="@mipmap/ic_ming"
+			android:summary="高级设置维护者、工具人">
+<!--			<intent android:action="android.intent.action.VIEW"-->
+<!--			android:data="http://www.coolapk.com/u/1144501" />-->
+
+		</Preference>
+	</PreferenceCategory>
+
+	<PreferenceCategory android:key="readme"
+		android:title="温馨提示">
+		<PreferenceScreen
+			android:key="group"
+			android:icon="@mipmap/ic_team"/>
+		<PreferenceScreen
+			android:key="pay"
+			android:icon="@mipmap/ic_pay"/>
+		<PreferenceScreen
+			android:key="help"
+			android:icon="@mipmap/ic_help"/>
+	</PreferenceCategory>
+</PreferenceScreen>
