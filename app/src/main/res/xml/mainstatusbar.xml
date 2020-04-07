@@ -13,7 +13,7 @@
             android:summaryOff="已关闭"
             android:summaryOn="默认开启"
             android:defaultValue="0"
-            android:key="weather_active"
+            android:layout="@layout/checkbox"
             android:title="状态栏天气" />
         <CheckBoxPreference
             android:icon="@mipmap/ic_statusbar_style"
@@ -33,13 +33,18 @@
             android:icon="@mipmap/ic_search_setting"
             android:defaultValue="0"
             android:key="search_show"
-            android:title="状态栏搜索(或设置图标)切换" />
-    </PreferenceCategory>
+            android:title="搜索(或设置图标)" />
         <CheckBoxPreference
             android:icon="@mipmap/ic_signal"
             android:defaultValue="0"
             android:key="signal_double"
             android:title="双排信号" />
+        <CheckBoxPreference
+            android:defaultValue="0"
+            android:key="notch_left"
+            android:title="定位中以及其它图标去除" />
+    </PreferenceCategory>
+
         <PreferenceCategory
             android:title="时间设置">
         <CheckBoxPreference
@@ -54,6 +59,7 @@
             android:title="时间显秒" />
             <CheckBoxPreference
                 android:title="时钟常显"
+                android:icon="@mipmap/ic_time_long"
                 android:key="time_show_long"/>
             </PreferenceCategory>
         <PreferenceCategory
@@ -63,9 +69,9 @@
             android:defaultValue="0"
             android:key="network_right"
             android:title="网速右显" />
-        <CheckBoxPreference
+        <Preference
             android:icon="@mipmap/ic_network_interval"
-            android:title="网速刷新率"
+            android:title="网速刷新率自定义"
             android:key="network_interval"/>
         </PreferenceCategory>
 

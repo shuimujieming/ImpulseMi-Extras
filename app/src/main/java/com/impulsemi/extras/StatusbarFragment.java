@@ -1,6 +1,6 @@
 package com.impulsemi.extras;
-import android.app.admin.DevicePolicyManager;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -9,9 +9,14 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.provider.Settings;
+import android.text.SpannableString;
+import android.text.method.DigitsKeyListener;
+import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import java.io.File;
+
+import miui.app.AlertDialog;
 
 public class StatusbarFragment extends PreferenceFragment implements OnPreferenceChangeListener {
 
@@ -32,7 +37,6 @@ public class StatusbarFragment extends PreferenceFragment implements OnPreferenc
 
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
         String key = preference.getKey();
-        CheckBoxPreference network_interval = (CheckBoxPreference) findPreference("network_interval");
         CheckBoxPreference signal_double = (CheckBoxPreference) findPreference("signal_double");
         CheckBoxPreference time_center = (CheckBoxPreference) findPreference("time_center");
         CheckBoxPreference weather_active = (CheckBoxPreference) findPreference("weather_active");
@@ -43,6 +47,7 @@ public class StatusbarFragment extends PreferenceFragment implements OnPreferenc
         CheckBoxPreference time_show_long = (CheckBoxPreference) findPreference("time_show_long");
         CheckBoxPreference time_s = (CheckBoxPreference) findPreference("time_s");
         CheckBoxPreference statusbar_hide = (CheckBoxPreference) findPreference("statusbar_hide");
+        CheckBoxPreference notch_left = (CheckBoxPreference) findPreference("notch_left");
         //android.intent.action.USER_SWITCHED->原地去世android.net.conn.CONNECTIVITY_CHANGE
         //com.miui.app.ExtraStatusBarManager.TRIGGER_TOGGLE_LOCK锁屏
         //my.settings.REFRESH_STATUSBAR刷新状态栏
@@ -50,6 +55,20 @@ public class StatusbarFragment extends PreferenceFragment implements OnPreferenc
         //com.miui.app.ExtraStatusBarManager.action_enter_drive_mode进入开车模式
         //com.miui.app.ExtraStatusBarManager.action_leave_drive_mode推出开车模式
 
+
+        if (key.equals("notch_left"))
+        { ContentResolver contentResolver = getContext().getContentResolver();
+            if (notch_left.isChecked())
+            {
+                Settings.System.putInt(contentResolver,"impulse_notch_left",0x0);
+
+            }
+          else
+            {
+                Settings.System.putInt(contentResolver,"impulse_notch_left",0x8);
+            }
+            ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui",true);
+        }
 
         if(key.equals("time_s"))
         {
@@ -115,17 +134,49 @@ public class StatusbarFragment extends PreferenceFragment implements OnPreferenc
 
         if (key.equals("network_interval"))
         {
-            ContentResolver contentResolver = getContext().getContentResolver();
-            if (network_interval.isChecked())
-            {
-                Settings.System.putInt(contentResolver,"status_bar_network_speed_interval",500);
 
-            }
-            else
-            {
-                Settings.System.putInt(contentResolver,"status_bar_network_speed_interval",4000);
-            }
-            ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui",true);
+            final EditText interval = new EditText(getActivity());
+            interval.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
+            SpannableString s = new SpannableString("请输入修改的网速间隔时间,单位是毫秒，\n如1秒就填入1000,默认刷新间隔为4000");
+            interval.setHint(s);
+
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("网速刷新率")
+                    .setView(interval)
+                    .setCancelable(true)
+                    .setPositiveButton("修改", new DialogInterface.OnClickListener()
+                            {
+                                public void onClick(DialogInterface dialog, int which)
+                                {
+                                    String input = interval.getText().toString();
+                                    interval.setText("");
+                                    try
+                                    {
+                                        int i =Integer.parseInt(input);
+                                            ContentResolver contentResolver = getContext().getContentResolver();
+                                            Settings.System.putInt(contentResolver,"status_bar_network_speed_interval",i);
+                                            Toast.makeText(getActivity(), "网速间隔刷新率改为: " + input + "毫秒", Toast.LENGTH_SHORT).show();
+                                            ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui",true);
+                                    }
+                                    catch (NumberFormatException e)
+                                    {
+                                        Toast.makeText(getActivity(), "出现异常,请重新输入", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }
+                    )
+                    .setNegativeButton("还原", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which)
+                        {
+                            Toast.makeText(getActivity(), "还原为官方默认刷新率", Toast.LENGTH_SHORT).show();
+                            ContentResolver contentResolver = getContext().getContentResolver();
+                            Settings.System.putInt(contentResolver,"status_bar_network_speed_interval",4000);
+                            ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui",true);
+
+                        }
+                    })
+                    .show();
+
         }
         if(key.equals("search_show"))
         {ContentResolver contentResolver = getContext().getContentResolver();

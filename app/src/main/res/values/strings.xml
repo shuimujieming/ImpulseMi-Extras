@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">ImpulseMi Extras</string>
+    <array name="desktop_lay">
+        <item>4 x 5</item>
+        <item>4 x 6</item>
+        <item>5 x 5</item>
+        <item>5 x 6</item>
+        <item>6 x 5</item>
+        <item>6 x 6</item>
+    </array>
 </resources>

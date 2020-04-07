@@ -23,6 +23,7 @@
             android:summaryOff="已关闭" />
         <CheckBoxPreference
             android:title="米10充电动画切换"
+            android:icon="@mipmap/ic_charge_animation"
             android:key="charge_show"/>
     </PreferenceCategory>
  <PreferenceCategory
@@ -69,12 +70,9 @@
  </PreferenceCategory>
     <PreferenceCategory
         android:title="桌面修改">
-        <ListPreference
+        <Preference
             android:icon="@mipmap/ic_desktop_layout"
             android:title="桌面布局"
-            android:defaultValue="1"
-            android:entries="@array/desktop_layout"
-            android:entryValues="@array/desktop_values"
             android:key="desktop_layout" />
     </PreferenceCategory>
     <PreferenceCategory

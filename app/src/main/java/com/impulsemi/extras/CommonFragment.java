@@ -32,8 +32,6 @@ import miui.app.AlertDialog;
 
 public class CommonFragment extends PreferenceFragment implements OnPreferenceChangeListener {
 
-private ListPreference desktop_layout = null;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -43,7 +41,6 @@ private ListPreference desktop_layout = null;
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.maincommon);
 
-        desktop_layout = (ListPreference) findPreference("desktop_layout");
         //Build.DEVICE设备型号cepheus
         //Build.DISPLAY是BuildID，QKQ1.190825.002 test-keys.....
         //Build.BRAND品牌Xiaomi
@@ -89,28 +86,7 @@ private ListPreference desktop_layout = null;
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
 
-        if (preference.equals(desktop_layout))
-        {
-            startActivity(new Intent("android.intent.action.MAIN").addCategory("android.intent.category.HOME"));//返回桌面
-            Intent intent = new Intent("android.intent.category.HOME");
-            Toast.makeText(getContext(), "重启桌面生效中", Toast.LENGTH_LONG).show();
-            try {
-                forceStopApp("com.miui.home");
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-
-
-                // ShellUtils.execCommand("/system/xbin/busybox killall com.miui.home",true);
+        // ShellUtils.execCommand("/system/xbin/busybox killall com.miui.home",true);
 
 //                String[] a = new String[]{"rm -rf /system/media/theme/default/com.miui.home", "cp /system/tools/com.miui.home.46 /system/media/theme/default/com.miui.home", "chmod -R 0644 /system/media/theme/default/com.miui.home", "/system/tools/busybox killall com.miui.home"};
 //                ShellUtils.execCommand(a, true);
@@ -129,6 +105,57 @@ private ListPreference desktop_layout = null;
 
 
 
+        if(key.equals("desktop_layout"))
+        {
+            new AlertDialog.Builder(getActivity())
+                    .setItems(R.array.desktop_lay, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            final int value = which;
+                            switch (value)
+                            {
+                                case 0:
+                                    ShellUtils.execCommand("cp /system/xbin/itachigold/Home/com.miui.home45 /system/media/theme/default/com.miui.home",true);
+                                    break;
+                                case 1:
+                                    ShellUtils.execCommand("cp /system/xbin/itachigold/Home/com.miui.home46 /system/media/theme/default/com.miui.home",true);
+                                    break;
+                                case 2:
+                                    ShellUtils.execCommand("cp /system/xbin/itachigold/Home/com.miui.home55 /system/media/theme/default/com.miui.home",true);
+                                    break;
+                                case 3:
+                                    ShellUtils.execCommand("cp /system/xbin/itachigold/Home/com.miui.home56 /system/media/theme/default/com.miui.home",true);
+                                    break;
+                                case 4:
+                                    ShellUtils.execCommand("cp /system/xbin/itachigold/Home/com.miui.home65 /system/media/theme/default/com.miui.home",true);
+                                    break;
+                                case 5:
+                                    ShellUtils.execCommand("cp /system/xbin/itachigold/Home/com.miui.home66 /system/media/theme/default/com.miui.home",true);
+                                    break;
+                            }
+                            ShellUtils.execCommand("chmod -R 0644 /system/media/theme/default/com.miui.home",true);
+                            try {
+                                forceStopApp("com.miui.home");
+                            } catch (ClassNotFoundException e) {
+                                e.printStackTrace();
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            } catch (NoSuchMethodException e) {
+                                e.printStackTrace();
+                            }
+                            startActivity(new Intent("android.intent.action.MAIN").addCategory("android.intent.category.HOME"));//返回桌面
+
+                            Intent intent = new Intent("android.intent.category.HOME");
+                            Toast.makeText(getContext(), "正在重启桌面生效中", Toast.LENGTH_LONG).show();
+                        }
+
+                    })
+                    .setTitle("桌面布局")
+                    .setCancelable(true)
+                    .show();
+        }
         if (key.equals("charge_show"))
         {
             ContentResolver contentResolver = getContext().getContentResolver();
@@ -158,10 +185,10 @@ private ListPreference desktop_layout = null;
         {
             final EditText dpi = new EditText(getActivity());
             dpi.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
-            SpannableString s = new SpannableString("键入要修改的数值");
+            SpannableString s = new SpannableString("请输入要修改的数值");
             dpi.setHint(s);
 
-            new android.app.AlertDialog.Builder(getActivity())
+            new AlertDialog.Builder(getActivity())
                     .setTitle("请输入")
                     .setView(dpi)
                     .setCancelable(true)
@@ -176,7 +203,7 @@ private ListPreference desktop_layout = null;
                                 int i =Integer.parseInt(input);
                                 if (i < 200 || i > 600)
                                 {
-                                    Toast.makeText(getActivity(), "请输入200到560之间的数值,否则会造成屏幕显示异常", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(), "请输入200到600之间的数值,否则会造成屏幕显示异常", Toast.LENGTH_LONG).show();
                                 }
                                 else
                                 {
@@ -205,22 +232,29 @@ private ListPreference desktop_layout = null;
         {
             if(brevent_active.isChecked())
             {
-                ShellUtils.execCommand("sh /system/xbin/itachigold/Brevent_on.sh",true);
+                //ShellUtils.execCommand("sh /system/xbin/itachigold/Brevent_on.sh",true);
+                ShellUtils.execCommand("cp /system/app/Brevent/on/service.jar /system/system/framework/",true);
+                ShellUtils.execCommand("chmod -R 0644 /system/framework/service.jar",true);
+                String[] brevent_on = new String[]{"mv /system/app/Brevent/Brevent.bak /system/app/Brevent/Brevent.apk", "chmod -R 0644 /system/app/Brevent/Brevent.apk"};
+                ShellUtils.execCommand(brevent_on, true);
             }
             else
             {
-                ShellUtils.execCommand("sh /system/xbin/itachigold/Brevent_off.sh",true);
+                //ShellUtils.execCommand("sh /system/xbin/itachigold/Brevent_off.sh",true);
+                ShellUtils.execCommand("cp /system/app/Brevent/off/service.jar /system/system/framework/",true);
+                ShellUtils.execCommand("chmod -R 0644 /system/framework/service.jar",true);
+                String[] brevent_off = new String[]{"mv /system/app/Brevent/Brevent.apk /system/app/Brevent/Brevent.bak"};
+                ShellUtils.execCommand(brevent_off, true);
             }
-
-            reboot();
             ToastUtil.showMsg(getContext(),"黑域状态切换");
+            reboot();
 
         }
         if(key.equals("power_advanced"))
         {
             if (power_advanced.isChecked())
             {
-                    String[] a = new String[]{"cp /system/xbin/itachigold/powermenu_s /system/media/theme/default/powermenu", "chmod -R 0644 /system/media/theme/default/powermenu"};
+                    String[] a = new String[]{"cp /system/xbin/itachigold/ad_powermenu /system/media/theme/default/powermenu", "chmod -R 0644 /system/media/theme/default/powermenu"};
                     ShellUtils.execCommand(a, true);
             }
 
@@ -235,15 +269,15 @@ private ListPreference desktop_layout = null;
         if(key.equals("power_mask"))
         {
             final EditText dpi = new EditText(getActivity());
-            SpannableString s = new SpannableString("输入要伪装的电量值");
+            SpannableString s = new SpannableString("请输入要伪装的电量值");
             dpi.setHint(s);
             dpi.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
-            new android.app.AlertDialog.Builder(getActivity())
-                    .setTitle("自定义电量值")
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("伪装电量")
 
                     .setView(dpi)
                     .setCancelable(true)
-                    .setPositiveButton("伪装", new DialogInterface.OnClickListener() {
+                    .setPositiveButton("修改", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which)
                         {
                             String input = dpi.getText().toString();
