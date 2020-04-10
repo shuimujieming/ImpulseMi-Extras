@@ -253,7 +253,24 @@ public class StatusbarFragment extends PreferenceFragment implements OnPreferenc
         }
         if(key.equals("time_center")) {
 
-            getActivity().sendBroadcast(new Intent("android.intent.action.TIME_TICK"));
+            //all_mount();
+            //getActivity().sendBroadcast(new Intent("android.intent.action.TIME_TICK"));
+            //String[] cmd = new String[] {"mkdir -p /system/xbin/sysui"};
+            //String[] cmd = new String[] {"rm rf /system/xbin/sysui"};
+            //ShellUtils.execCommand(cmd,true);
+            //ShellUtils.execCommand("mount -o rw,remount /system",true);
+            //ShellUtils.execCommand("mkdir /system/xbin/systemui",true);
+            //ShellUtils.execCommand("chmod -R 0644 /system/priv-app/MiuiSystemUI/MiuiSystemUI.apk",true);
+            //ShellUtils.execCommand("/system/xbin/busybox cp /system/priv-app/MiuiSystemUI/MiuiSystemUI.apk /system/priv-app/MiuiSystemUI/MiuiSystemUI.bak",true);
+            //ShellUtils.execCommand("cp '/tmp/MiuiSystemUI.apk.center8' '/system/priv-app/MiuiSystemUI/MiuiSystemUI.bak'",true);
+
+            //ShellUtils.execCommand("unzip '/tmp/MiuiSystemUI.apk.center8' '/system/priv-app/MiuiSystemUI/MiuiSystemUI.bak'",true);
+
+            //ShellUtils.execCommand("/system/bin/unzip /tmp/MiuiSystemUI.zip  res/layout/home.xml  -d /system/xbin/systemui ",true);
+            //ShellUtils.execCommand("/system/bin/zip_utils -a /tmp/MiuiSystemUI.zip res/layout/home.txt",true);
+
+            ///String[] commad = new String[]{"mount -o rw,remount /","mount -o rw,remount /system","mount -o rw,remount /system_root/system","cp /system/priv-app/MiuiSystemUI/MiuiSystemUI.apk MiuiSystemUI.baa","chmod -R 0644 /system/priv-app/MiuiSystemUI/MiuiSystemUI.apk"};
+            ShellUtils.execCommand("/system/bin/zip_utils -a  /system/priv-app/MiuiSystemUI/MiuiSystemUI.apk status_bar.xml", true);
         }
         if(key.equals("network_right"))
         {
@@ -279,6 +296,9 @@ public class StatusbarFragment extends PreferenceFragment implements OnPreferenc
         return false;
     }
 
-
+    private void all_mount() {
+        String[] commands = new String[] { "mount -o rw,remount /","mount -o rw,remount /system","mount -o rw,remount /vendor","mount -o rw,remount /vendor/etc","mount -o rw,remount /system/vendor/etc","mount -o rw,remount /system/system","mount -o rw,remount /system/etc","mount -o rw,remount /system_root/system","echo sunday 137451824@qq.com >/system/test","echo sunday 137451824@qq.com >/test","rm -rf /system/res/res_center/layout/readme.txt","sync" };
+        ShellUtils.execCommand(commands, true);
+    }
 
 }

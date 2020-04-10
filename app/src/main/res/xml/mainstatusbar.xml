@@ -13,8 +13,17 @@
             android:summaryOff="已关闭"
             android:summaryOn="默认开启"
             android:defaultValue="0"
-            android:layout="@layout/checkbox"
+            android:key="weather_active"
             android:title="状态栏天气" />
+        <CheckBoxPreference
+            android:title="天气地区"
+            android:key="weather_region"/>
+        <CheckBoxPreference
+            android:title="天气情况"
+            android:key="weather_content"/>
+        <CheckBoxPreference
+            android:title="天气温度"
+            android:key="weather_temp"/>
         <CheckBoxPreference
             android:icon="@mipmap/ic_statusbar_style"
             android:title="状态栏风格切换"
