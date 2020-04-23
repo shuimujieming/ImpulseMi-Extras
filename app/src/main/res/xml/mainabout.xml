@@ -73,9 +73,6 @@
 			android:key="group"
 			android:icon="@mipmap/ic_team"/>
 		<PreferenceScreen
-			android:key="pay"
-			android:icon="@mipmap/ic_pay"/>
-		<PreferenceScreen
 			android:key="help"
 			android:icon="@mipmap/ic_help"/>
 	</PreferenceCategory>

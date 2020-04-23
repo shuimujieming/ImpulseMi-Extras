@@ -1,0 +1,52 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:orientation="vertical">
+    
+    <TextView
+        android:id="@+id/tiptextview"
+        android:textSize="15sp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100.0dp"
+        android:layout_marginBottom="55.0dp"
+        android:text="温馨提示：冻结系统应用有风险，请谨慎冻结" />
+    
+    <Button
+        android:id="@+id/all_apps"
+        android:paddingTop="15.0dp"
+        android:paddingBottom="15.0dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sys_app" />
+    
+    <Button
+        android:id="@+id/users_app"
+        android:paddingTop="15.0dp"
+        android:paddingBottom="15.0dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/uses_app" />
+
+	<Button
+        android:id="@+id/freezed_app"
+        android:paddingTop="15.0dp"
+        android:paddingBottom="15.0dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/freeze_app" />
+
+    <Button
+        android:id="@+id/clean_list"
+        android:paddingTop="15.0dp"
+        android:paddingBottom="15.0dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/clean_freezen_list" />
+
+</LinearLayout>

@@ -7,6 +7,19 @@
     <PreferenceCategory
         android:key="system_content"
         android:title="系统优化">
+        <Preference
+            android:key="app_freeze"
+            android:title="应用冻结">
+            <intent
+                android:targetPackage="com.impulsemi.extras"
+                android:action="android.intent.action.MAIN"
+                android:targetClass="com.impulsemi.extras.FreezeActivity"/>
+        </Preference>
+        <Preference
+            android:title="运动步数修改"
+            android:key="running_steps"
+            />
+
         <CheckBoxPreference
             android:icon="@mipmap/ic_power"
             android:defaultValue="0"
@@ -22,7 +35,12 @@
             android:summaryOn="已激活"
             android:summaryOff="已关闭" />
         <CheckBoxPreference
-            android:title="米10充电动画切换"
+            android:defaultValue="0"
+            android:key="finger_unlock"
+            android:title="开机第一次指纹解锁"
+           />
+        <Preference
+            android:title="充电动画切换"
             android:icon="@mipmap/ic_charge_animation"
             android:key="charge_show"/>
     </PreferenceCategory>
@@ -69,14 +87,88 @@
 
  </PreferenceCategory>
     <PreferenceCategory
+        android:title="音效设置">
+        <CheckBoxPreference
+            android:key="charge_on"
+            android:title="电源连接音效关闭"/>
+        <CheckBoxPreference
+            android:key="charge_off"
+            android:title="电源断开音效关闭"/>
+        <CheckBoxPreference
+            android:key="charge_wireless"
+            android:title="无线充电音效关闭"/>
+        <CheckBoxPreference
+            android:key="Bird_Notification"
+            android:title="静音切换音效关闭"/>
+        <CheckBoxPreference
+            android:key="low_power"
+            android:title="低电量音效关闭"/>
+
+
+    </PreferenceCategory>
+    <PreferenceCategory
         android:title="桌面修改">
+        <CheckBoxPreference
+            android:icon="@mipmap/ic_desktop_layout"
+            android:title="桌面底栏标题"
+            android:key="desktop_bottom_title" />
         <Preference
             android:icon="@mipmap/ic_desktop_layout"
             android:title="桌面布局"
             android:key="desktop_layout" />
+        <Preference
+            android:icon="@mipmap/ic_desktop_layout"
+            android:title="小白条修改"
+            android:key="navigation_layout" />
+        <CheckBoxPreference
+            android:icon="@mipmap/ic_desktop_layout"
+            android:title="隐藏桌面图标标题"
+            android:key="desktop_icon_title" />
+        <CheckBoxPreference
+            android:icon="@mipmap/ic_desktop_layout"
+            android:title="开启图标阴影"
+            android:key="desktop_icon_shadow" />
     </PreferenceCategory>
+
     <PreferenceCategory
         android:title="其它功能">
+        <CheckBoxPreference
+            android:icon="@mipmap/ic_weather"
+            android:enabled="true"
+            android:selectable="true"
+            android:summaryOff="已关闭"
+            android:summaryOn="已开启"
+            android:defaultValue="0"
+            android:key="aod_weather_active_big"
+            android:title="息屏天气" />
+        <CheckBoxPreference
+            android:title="天气地区"
+            android:key="aod_weather_region"/>
+        <CheckBoxPreference
+            android:title="天气情况"
+            android:key="aod_weather_content"/>
+        <CheckBoxPreference
+            android:title="天气温度"
+            android:key="aod_weather_temp"/>
+        <CheckBoxPreference
+            android:title="息屏彩色通知图标切换"
+            android:key="aod_icon_color"/>
+        <Preference
+            android:title="窗口动画缩放速度"
+            android:key="window_animation"
+            />
+        <Preference
+            android:title="过渡动画缩放速度"
+            android:key="change_animation"
+            />
+        <Preference
+            android:title="Animation动画时长调节"
+            android:key="time_animation"
+            />
+        <Preference
+            android:title="自定义音量级数"
+            android:key="vol_set"
+            />
         <Preference
             android:icon="@mipmap/ic_monitor_dpi"
             android:title="修改屏幕密度"

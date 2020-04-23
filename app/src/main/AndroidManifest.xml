@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    coreApp="true"
     package="com.impulsemi.extras"
-    android:compileSdkVersion="28"
-    android:compileSdkVersionCodename="9"
     android:sharedUserId="android.uid.system"
+
     >
     <uses-permission android:name="android.permission.FORCE_STOP_PACKAGES"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS"
@@ -21,14 +20,33 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        >
+        <activity
+            android:name=".FreezeActivity"
+            android:excludeFromRecents="true">
+        </activity>
+        <activity
+            android:name=".NavigationlayoutActivity"
+            android:excludeFromRecents="true">
+        </activity>
+        <activity
+            android:name=".FilterListViewActivity"
+            android:excludeFromRecents="true">
+        </activity>
         <activity
             android:name=".WifiActivity"
             android:excludeFromRecents="true">
         </activity>
+        <activity android:name=".DesktoplayoutActivity"
+            android:excludeFromRecents="true">
+         </activity>
+        <activity android:name=".StatusbarlayoutActivity"
+            android:excludeFromRecents="true">
+        </activity>
         <activity
             android:name=".MainActivity"
-            android:excludeFromRecents="true">
+            android:excludeFromRecents="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
