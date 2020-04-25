@@ -18,6 +18,10 @@ public class NavigationlayoutActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle bundle) {
+        if(MainActivity.isPass!=1)
+        {
+            finish();
+        }
         setTheme(miui.R.style.Theme_Light_Settings);
         super.onCreate(bundle);
         setTitle("小白条外观修改");
@@ -109,6 +113,26 @@ public class NavigationlayoutActivity extends Activity {
                 ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <color name=\\\"navigation_handle_light_color\\\">" +"#ffffffff<\\/color>/\" /data/system/theme/theme_values.xml",true);
 
                 ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui theme_values.xml",true);
+
+
+
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/dimen name=\"navigation_handle_bottom\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <dimen name=\\\"navigation_handle_bottom\\\">" + x +"dp<\\/dimen>/\" /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/dimen name=\"navigation_home_handle_width\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <dimen name=\\\"navigation_home_handle_width\\\">" + y +"dp<\\/dimen>/\" /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/dimen name=\"navigation_handle_radius\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <dimen name=\\\"navigation_handle_radius\\\">" + a +"dp<\\/dimen>/\" /data/system/theme/nightmode/theme_values.xml",true);
+
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/color name=\\\"navigation_handle_dark_color\\\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <color name=\\\"navigation_handle_dark_color\\\">" +"#ff000000<\\/color>/\" /data/system/theme/nightmode/theme_values.xml",true);
+
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/color name=\\\"navigation_handle_light_color\\\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <color name=\\\"navigation_handle_light_color\\\">" +"#ffffffff<\\/color>/\" /data/system/theme/nightmode/theme_values.xml",true);
+
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui nightmode/theme_values.xml",true);
+
+
                 ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
 
 
@@ -137,6 +161,26 @@ public class NavigationlayoutActivity extends Activity {
 
 
                 ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui theme_values.xml",true);
+
+
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/dimen name=\"navigation_handle_bottom\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <dimen name=\\\"navigation_handle_bottom\\\">" + x +"dp<\\/dimen>/\" /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/dimen name=\"navigation_home_handle_width\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <dimen name=\\\"navigation_home_handle_width\\\">" + y +"dp<\\/dimen>/\" /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/dimen name=\"navigation_handle_radius\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <dimen name=\\\"navigation_handle_radius\\\">" + a +"dp<\\/dimen>/\" /data/system/theme/nightmode/theme_values.xml",true);
+
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/color name=\\\"navigation_handle_dark_color\\\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <color name=\\\"navigation_handle_dark_color\\\">" +"#ff000000<\\/color>/\" /data/system/theme/nightmode/theme_values.xml",true);
+
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/color name=\\\"navigation_handle_light_color\\\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <color name=\\\"navigation_handle_light_color\\\">" +"#ffffffff<\\/color>/\" /data/system/theme/nightmode/theme_values.xml",true);
+
+
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui nightmode/theme_values.xml",true);
+
+
                 ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
 
             }

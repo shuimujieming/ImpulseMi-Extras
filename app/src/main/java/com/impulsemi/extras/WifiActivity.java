@@ -23,6 +23,10 @@ public class WifiActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(MainActivity.isPass!=1)
+        {
+            finish();
+        }
         setTheme(miui.R.style.Theme_Light_Settings);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi);

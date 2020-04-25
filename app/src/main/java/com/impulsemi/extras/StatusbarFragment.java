@@ -25,10 +25,12 @@ import com.skydoves.colorpickerview.*;
 import com.skydoves.colorpickerview.ColorEnvelope;
 import com.skydoves.colorpickerview.ColorPickerDialog;
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
+import com.skydoves.colorpickerview.listeners.ColorPickerViewListener;
 
 import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import miui.app.AlertDialog;
+import miui.widget.SeekBar;
 
 public class StatusbarFragment extends PreferenceFragment implements OnPreferenceChangeListener {
 public int i=0;
@@ -52,7 +54,7 @@ public String icon_status;
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         return false;
     }
-    @TargetApi(Build.VERSION_CODES.M)
+    @androidx.annotation.RequiresApi(api = Build.VERSION_CODES.O)
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
         String key = preference.getKey();
         CheckBoxPreference signal_double = (CheckBoxPreference) findPreference("signal_double");
@@ -96,13 +98,47 @@ public String icon_status;
         CheckBoxPreference statusbar_hide_mobile = (CheckBoxPreference) findPreference("statusbar_hide_mobile");
         CheckBoxPreference dis_hd = (CheckBoxPreference) findPreference("dis_hd");
         CheckBoxPreference dis_4g = (CheckBoxPreference) findPreference("dis_4g");
+        CheckBoxPreference notification_show = (CheckBoxPreference) findPreference("notification_show");
+
         //android.intent.action.USER_SWITCHED->原地去世android.net.conn.CONNECTIVITY_CHANGE
         //com.miui.app.ExtraStatusBarManager.TRIGGER_TOGGLE_LOCK锁屏
         //my.settings.REFRESH_STATUSBAR刷新状态栏
         //android.intent.action.SIM_STATE_CHANGED手机卡刷新
         //com.miui.app.ExtraStatusBarManager.action_enter_drive_mode进入开车模式
         //com.miui.app.ExtraStatusBarManager.action_leave_drive_mode推出开车模式   headset  volume  airplane  location
+        if(key.equals("notification_show"))
+        {
+            if (notification_show.isChecked())
+            {
+                mount();
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/dimen name=\"notification_min_height_legacy\"/d' /data/system/theme/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <dimen name=\\\"notification_min_height_legacy\\\">" + "134dp" +"<\\/dimen>/\" /data/system/theme/theme_values.xml",true);
 
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/dimen name=\"notification_min_height_legacy\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <dimen name=\\\"notification_min_height_legacy\\\">" + "134dp" +"<\\/dimen>/\" /data/system/theme/nightmode/theme_values.xml",true);
+
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui nightmode/theme_values.xml",true);
+
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
+            }
+            else
+                {
+                    mount();
+                    ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui theme_values.xml -o -d /data/system/theme/",true);
+                    ShellUtils.execCommand("/system/xbin/busybox sed -i '/dimen name=\"notification_min_height_legacy\"/d' /data/system/theme/theme_values.xml",true);
+
+                    ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                    ShellUtils.execCommand("/system/xbin/busybox sed -i '/dimen name=\"notification_min_height_legacy\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+
+                    ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui nightmode/theme_values.xml",true);
+
+                    ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui theme_values.xml",true);
+                    ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
+            }
+        }
 
         if (key.equals("signal_single"))
         {
@@ -244,30 +280,83 @@ public String icon_status;
 
             }
         }
-        if (key.equals("network_dual"))
+        if (key.equals("network_dual_type"))
         {
-            if (network_dual.isChecked())
-            {
+            new AlertDialog.Builder(getActivity())
+                    .setItems(R.array.network_dual, new DialogInterface.OnClickListener() {
+                        ContentResolver contentResolver = getContext().getContentResolver();
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            final int value = which;
+                            switch (value)
+                            {
+                                case 0:
+                                    Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",0);
+                                    break;
+                                case 1:
+                                    Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",1);
+                                    break;
+                                case 2:
+                                    Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",2);
+                                    break;
+                                case 3:
+                                    Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",3);
+                                    break;
+                            }
+                        }
 
-                Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",3);
-                Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",0);
-                Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",3);
+                    })
+                    .setTitle("双排网速")
+                    .setCancelable(true)
+                    .show();
+        }
+        if(key.equals("network_dual_up"))
+        {
+            final EditText editText = new EditText(getContext());
+            editText.setHint("请输入你需要修改的文字");
+            new AlertDialog.Builder(getActivity())
+                    .setView(editText)
+                    .setPositiveButton("设置", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which)
+                        {
+                            Settings.System.putString(getContext().getContentResolver(),"impulse_network_sign_up",editText.getText().toString());//使用前必须给定值，否则不许打开
+                        }
+                    })
+                    .setNegativeButton("还原", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Settings.System.putString(getContext().getContentResolver(),"impulse_network_sign_up"," \\u25b2");//使用前必须给定值，否则不许打开
 
+                        }
+                    })
+                    .setTitle("双排网速上传箭头自定义")
+                    .setCancelable(true)
+                    .show();
+        }
+        if(key.equals("network_dual_down"))
+        {
+            final EditText editText = new EditText(getContext());
+            editText.setHint("请输入你需要修改的文字");
+            new AlertDialog.Builder(getActivity())
+                    .setView(editText)
+                    .setPositiveButton("设置", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which)
+                        {
+                            Settings.System.putString(getContext().getContentResolver(),"impulse_network_sign_down",editText.getText().toString());//使用前必须给定值，否则不许打开
+                        }
+                    })
+                    .setNegativeButton("还原", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Settings.System.putString(getContext().getContentResolver(),"impulse_network_sign_down"," \\u25bc");
 
-                Settings.System.putString(getContext().getContentResolver(),"impulse_network_sign_up"," \\u25b2");//使用前必须给定值，否则不许打开
-                Settings.System.putString(getContext().getContentResolver(),"impulse_network_sign_down"," \\u25bc");
-            }
-            else
-            {
-
-                Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",0);
-                Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",3);
-                Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",0);
-
-                //Settings.System.putString(getContext().getContentResolver(),"impulse_network_sign_up","*");
-                //Settings.System.putString(getContext().getContentResolver(),"impulse_network_sign_down","*");
-
-            }
+                        }
+                    })
+                    .setTitle("双排网速下载箭头自定义")
+                    .setCancelable(true)
+                    .show();
         }
         if (key.equals("show_telecom"))
         {
@@ -280,6 +369,13 @@ public String icon_status;
                 ShellUtils.execCommand("/system/xbin/busybox sed -i '/bool name=\"show_carrier_in_status_bar_header\"/d' /data/system/theme/theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"show_carrier_in_status_bar_header\\\">" + "true" +"<\\/bool>/\" /data/system/theme/theme_values.xml",true);
 
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/bool name=\"show_carrier_in_status_bar\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"show_carrier_in_status_bar\\\">" + "true" +"<\\/bool>/\" /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/bool name=\"show_carrier_in_status_bar_header\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"show_carrier_in_status_bar_header\\\">" + "true" +"<\\/bool>/\" /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui nightmode/theme_values.xml",true);
+
                 ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
             }
@@ -291,6 +387,14 @@ public String icon_status;
                 ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"show_carrier_in_status_bar\\\">" + "false" +"<\\/bool>/\" /data/system/theme/theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox sed -i '/bool name=\"show_carrier_in_status_bar_header\"/d' /data/system/theme/theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"show_carrier_in_status_bar_header\\\">" + "false" +"<\\/bool>/\" /data/system/theme/theme_values.xml",true);
+
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/bool name=\"show_carrier_in_status_bar\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"show_carrier_in_status_bar\\\">" + "false" +"<\\/bool>/\" /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/bool name=\"show_carrier_in_status_bar_header\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"show_carrier_in_status_bar_header\\\">" + "false" +"<\\/bool>/\" /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui nightmode/theme_values.xml",true);
+
 
                 ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
@@ -305,6 +409,12 @@ public String icon_status;
                 ShellUtils.execCommand("/system/xbin/busybox sed -i '/bool name=\"status_bar_notification_icons_peeking\"/d' /data/system/theme/theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"status_bar_notification_icons_peeking\\\">" + "true" +"<\\/bool>/\" /data/system/theme/theme_values.xml",true);
 
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/bool name=\"status_bar_notification_icons_peeking\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"status_bar_notification_icons_peeking\\\">" + "true" +"<\\/bool>/\" /data/system/theme/nightmode/theme_values.xml",true);
+
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui nightmode/theme_values.xml",true);
+
                 ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
             }
@@ -315,6 +425,13 @@ public String icon_status;
                 ShellUtils.execCommand("/system/xbin/busybox sed -i '/bool name=\"status_bar_notification_icons_peeking\"/d' /data/system/theme/theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"status_bar_notification_icons_peeking\\\">" + "false" +"<\\/bool>/\" /data/system/theme/theme_values.xml",true);
 
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/bool name=\"status_bar_notification_icons_peeking\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"status_bar_notification_icons_peeking\\\">" + "false" +"<\\/bool>/\" /data/system/theme/nightmode/theme_values.xml",true);
+
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui nightmode/theme_values.xml",true);
+
+
                 ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
             }
@@ -323,25 +440,73 @@ public String icon_status;
         {   Intent intent = new Intent("impulse.extras.showbattery");
             if(line_switch.isChecked())
             {
-                intent.putExtra("showbattery",1);
+                //intent.putExtra("showbattery",1);
+                Settings.System.putInt(getContext().getContentResolver(),"impulse_linebattery_show",1);
             }
             else
             {
-                intent.putExtra("showbattery",0);
+                Settings.System.putInt(getContext().getContentResolver(),"impulse_linebattery_show",0);
             }
             getContext().sendBroadcast(intent);
 
         }
         if(key.equals("line_width"))
         {
-            Settings.System.putFloat(getContext().getContentResolver(),"impulse_line_width",15.0f);
-            Intent intent = new Intent("impulse.extras.changeline");
-            getContext().sendBroadcast(intent);
+
+            final SeekBar seekBar = new SeekBar(getContext());
+
+            seekBar.setMax(50);
+            seekBar.setMin(1);
+            seekBar.setProgress((int) Settings.System.getFloat(getContext().getContentResolver(),"impulse_line_width",10.0f),true);
+            final AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+            seekBar.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(android.widget.SeekBar seekBar, int progress, boolean fromUser) {
+                ToastUtil toastUtil = new ToastUtil();
+                toastUtil.showMsg(getContext(),"当前选择的宽度为：" + String.valueOf(progress)+"dp");
+                    Settings.System.putFloat(getContext().getContentResolver(),"impulse_line_width",progress);
+                    Intent intent = new Intent("impulse.extras.changeline");
+                    getContext().sendBroadcast(intent);
+                }
+
+                @Override
+                public void onStartTrackingTouch(android.widget.SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(android.widget.SeekBar seekBar) {
+
+                }
+            });
+            dialog.setTitle("线性电池宽度").setView(seekBar);
+            dialog.setCancelable(true);
+//            dialog.setPositiveButton("设置", new DialogInterface.
+//                    OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                   int i = seekBar.getProgress();
+//                    Settings.System.putFloat(getContext().getContentResolver(),"impulse_line_width",i);
+//                    Intent intent = new Intent("impulse.extras.changeline");
+//                    getContext().sendBroadcast(intent);
+//                }
+//
+//            });
+            dialog.setNegativeButton("还原", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Settings.System.putFloat(getContext().getContentResolver(),"impulse_line_width",10.0f);
+                    Intent intent = new Intent("impulse.extras.changeline");
+                    getContext().sendBroadcast(intent);
+                }
+            });
+            dialog.show();
+
         }
         if(key.equals("line_color"))
         {
-            new ColorPickerDialog.Builder(getContext(), AlertDialog.THEME_LIGHT_EDIT)
-                    .setTitle("请选择线性电池颜色")
+            ColorPickerDialog.Builder colorPickerDialog = new ColorPickerDialog.Builder(getContext(), AlertDialog.THEME_LIGHT_EDIT);
+            colorPickerDialog.setTitle("请选择线性电池颜色")
                     .setPreferenceName("Line_Battery")
                     .setPositiveButton("选择",
                             new ColorEnvelopeListener() {
@@ -407,6 +572,13 @@ public String icon_status;
                 ShellUtils.execCommand("/system/xbin/busybox sed -i '/bool name=\"battery_meter_use_legacy_drawable\"/d' /data/system/theme/theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"battery_meter_use_legacy_drawable\\\">" + "true" +"<\\/bool>/\" /data/system/theme/theme_values.xml",true);
 
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/bool name=\"battery_meter_use_legacy_drawable\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"battery_meter_use_legacy_drawable\\\">" + "true" +"<\\/bool>/\" /data/system/theme/nightmode/theme_values.xml",true);
+
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui nightmode/theme_values.xml",true);
+
+
                 ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
                 //Settings.System.putInt(contentResolver,"impulse_status_bar_power_style",1);
@@ -416,6 +588,14 @@ public String icon_status;
                 ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui theme_values.xml -o -d /data/system/theme/",true);
                 ShellUtils.execCommand("/system/xbin/busybox sed -i '/bool name=\"battery_meter_use_legacy_drawable\"/d' /data/system/theme/theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"battery_meter_use_legacy_drawable\\\">" + "false" +"<\\/bool>/\" /data/system/theme/theme_values.xml",true);
+
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/bool name=\"battery_meter_use_legacy_drawable\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"battery_meter_use_legacy_drawable\\\">" + "false" +"<\\/bool>/\" /data/system/theme/nightmode/theme_values.xml",true);
+
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui nightmode/theme_values.xml",true);
+
+
 
                 ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
@@ -469,10 +649,17 @@ public String icon_status;
                                     ShellUtils.execCommand("/system/xbin/busybox sed -i '/string name=\"fmt_time_12hour_minute_pm\"/d' /data/system/theme/theme_values.xml",true);
                                     ShellUtils.execCommand( "/system/xbin/busybox sed -i \"s/<MIUI_Theme_Values>/&\\n    <string name=\\\"fmt_time_12hour_minute_pm\\\">" + input +"<\\/string>/\" /data/system/theme/theme_values.xml", true);
                                     ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/framework-miui-res theme_values.xml",true);
+
+                                    ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/framework-miui-res nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                                    ShellUtils.execCommand("/system/xbin/busybox sed -i '/string name=\"fmt_time_12hour_minute_pm\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                                    ShellUtils.execCommand( "/system/xbin/busybox sed -i \"s/<MIUI_Theme_Values>/&\\n    <string name=\\\"fmt_time_12hour_minute_pm\\\">" + input +"<\\/string>/\" /data/system/theme/nightmode/theme_values.xml", true);
+                                    ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/framework-miui-res nightmode/theme_values.xml",true);
+
+
                                     ShellUtils.execCommand("cp /data/system/theme/framework-miui-res.zip /data/system/theme/framework-miui-res",true);
 
                                     Toast.makeText(getContext(), "时钟格式-12小时制 设置为: " + input, Toast.LENGTH_SHORT).show();
-                            ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
+                                    ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
 
                         }
                     })
@@ -483,6 +670,11 @@ public String icon_status;
                             ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/framework-miui-res theme_values.xml -o -d /data/system/theme/",true);
                             ShellUtils.execCommand("/system/xbin/busybox sed -i '/string name=\"fmt_time_12hour_minute_pm\"/d' /data/system/theme/theme_values.xml",true);
                             ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/framework-miui-res theme_values.xml",true);
+
+                            ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/framework-miui-res nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                            ShellUtils.execCommand("/system/xbin/busybox sed -i '/string name=\"fmt_time_12hour_minute_pm\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                            ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/framework-miui-res nightmode/theme_values.xml",true);
+
                             ShellUtils.execCommand("cp /data/system/theme/framework-miui-res.zip /data/system/theme/framework-miui-res",true);
 
                             Toast.makeText(getContext(), "时钟格式-12小时制 设置为:默认", Toast.LENGTH_SHORT).show();
@@ -537,6 +729,12 @@ public String icon_status;
                             ShellUtils.execCommand("/system/xbin/busybox sed -i '/string name=\"fmt_time_24hour_minute\"/d' /data/system/theme/theme_values.xml",true);
                             ShellUtils.execCommand( "/system/xbin/busybox sed -i \"s/<MIUI_Theme_Values>/&\\n    <string name=\\\"fmt_time_24hour_minute\\\">" + input +"<\\/string>/\" /data/system/theme/theme_values.xml", true);
                             ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/framework-miui-res theme_values.xml",true);
+
+                            ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/framework-miui-res nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                            ShellUtils.execCommand("/system/xbin/busybox sed -i '/string name=\"fmt_time_24hour_minute\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                            ShellUtils.execCommand( "/system/xbin/busybox sed -i \"s/<MIUI_Theme_Values>/&\\n    <string name=\\\"fmt_time_24hour_minute\\\">" + input +"<\\/string>/\" /data/system/theme/nightmode/theme_values.xml", true);
+                            ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/framework-miui-res nightmode/0theme_values.xml",true);
+
                             ShellUtils.execCommand("cp /data/system/theme/framework-miui-res.zip /data/system/theme/framework-miui-res",true);
 
                             Toast.makeText(getContext(), "时钟格式-24小时制 设置为: " + input, Toast.LENGTH_SHORT).show();
@@ -551,6 +749,12 @@ public String icon_status;
                             ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/framework-miui-res theme_values.xml -o -d /data/system/theme/",true);
                             ShellUtils.execCommand("/system/xbin/busybox sed -i '/string name=\"fmt_time_24hour_minute\"/d' /data/system/theme/theme_values.xml",true);
                             ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/framework-miui-res theme_values.xml",true);
+
+                            ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/framework-miui-res nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                            ShellUtils.execCommand("/system/xbin/busybox sed -i '/string name=\"fmt_time_24hour_minute\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                            ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/framework-miui-res nightmode/theme_values.xml",true);
+
+
                             ShellUtils.execCommand("cp /data/system/theme/framework-miui-res.zip /data/system/theme/framework-miui-res",true);
 
                             Toast.makeText(getContext(), "时钟格式-24小时制 设置为:默认", Toast.LENGTH_SHORT).show();
@@ -569,6 +773,11 @@ public String icon_status;
                 ShellUtils.execCommand("/system/xbin/busybox sed -i '/bool name=\"status_bar_hide_volte\"/d' /data/system/theme/theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"status_bar_hide_volte\\\">" + "true" +"<\\/bool>/\" /data/system/theme/theme_values.xml",true);
 
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/bool name=\"status_bar_hide_volte\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"status_bar_hide_volte\\\">" + "true" +"<\\/bool>/\" /data/system/theme/nightmode/theme_values.xml",true);
+
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui nightmode/theme_values.xml",true);
 
                 ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
@@ -580,6 +789,11 @@ public String icon_status;
                 ShellUtils.execCommand("/system/xbin/busybox sed -i '/bool name=\"status_bar_hide_volte\"/d' /data/system/theme/theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"status_bar_hide_volte\\\">" + "false" +"<\\/bool>/\" /data/system/theme/theme_values.xml",true);
 
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/bool name=\"status_bar_hide_volte\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"status_bar_hide_volte\\\">" + "false" +"<\\/bool>/\" /data/system/theme/nightmode/theme_values.xml",true);
+
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui nightmode/theme_values.xml",true);
 
                 ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
@@ -594,6 +808,13 @@ public String icon_status;
                 ShellUtils.execCommand("/system/xbin/busybox sed -i '/dimen name=\"statusbar_signal_size\"/d' /data/system/theme/theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <dimen name=\\\"statusbar_signal_size\\\">" + "0.0dp" +"<\\/dimen>/\" /data/system/theme/theme_values.xml",true);
 
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/dimen name=\"statusbar_signal_size\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <dimen name=\\\"statusbar_signal_size\\\">" + "0.0dp" +"<\\/dimen>/\" /data/system/theme/nightmode/theme_values.xml",true);
+
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui nightmode/theme_values.xml",true);
+
+
                 ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
             }
@@ -603,7 +824,12 @@ public String icon_status;
                 mount();
                 ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui theme_values.xml -o -d /data/system/theme/",true);
                 ShellUtils.execCommand("/system/xbin/busybox sed -i '/dimen name=\"statusbar_signal_size\"/d' /data/system/theme/theme_values.xml",true);
-               // ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <dimen name=\\\"statusbar_signal_size\\\">" + "o.0dp" +"<\\/dimen>/\" /data/system/theme/theme_values.xml",true);
+
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/dimen name=\"statusbar_signal_size\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui nightmode/theme_values.xml",true);
+
 
                 ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
@@ -635,6 +861,14 @@ public String icon_status;
                                         ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <dimen name=\\\"statusbar_carrier_size\\\">" + i +"sp<\\/dimen>/\" /data/system/theme/theme_values.xml",true);
 
                                         ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui theme_values.xml",true);
+
+                                        ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                                        ShellUtils.execCommand("/system/xbin/busybox sed -i '/dimen name=\"statusbar_carrier_size\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                                        ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <dimen name=\\\"statusbar_carrier_size\\\">" + i +"sp<\\/dimen>/\" /data/system/theme/nightmode/theme_values.xml",true);
+
+                                        ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui nightmode/theme_values.xml",true);
+
+
                                         ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
 
                                     }
@@ -655,6 +889,14 @@ public String icon_status;
                             ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <dimen name=\\\"statusbar_carrier_size\\\">" + "12" +"sp<\\/dimen>/\" /data/system/theme/theme_values.xml",true);
 
                             ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui theme_values.xml",true);
+
+                            ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                            ShellUtils.execCommand("/system/xbin/busybox sed -i '/dimen name=\"statusbar_carrier_size\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                            ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <dimen name=\\\"statusbar_carrier_size\\\">" + "12" +"sp<\\/dimen>/\" /data/system/theme/nightmode/theme_values.xml",true);
+
+                            ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui nightmode/theme_values.xml",true);
+
+
                             ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
 
                         }
@@ -688,6 +930,13 @@ public String icon_status;
                                         ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <string name=\\\"megabyte_per_second\\\">" + input +"<\\/string>/\" /data/system/theme/theme_values.xml",true);
 
                                         ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui theme_values.xml",true);
+
+                                        ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                                        ShellUtils.execCommand("/system/xbin/busybox sed -i '/string name=\"megabyte_per_second\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                                        ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <string name=\\\"megabyte_per_second\\\">" + input +"<\\/string>/\" /data/system/theme/nightmode/theme_values.xml",true);
+
+                                        ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui nightmode/theme_values.xml",true);
+
                                         ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
 
                                     }
@@ -707,6 +956,13 @@ public String icon_status;
                             ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <string name=\\\"megabyte_per_second\\\">" + "M's" +"<\\/string>/\" /data/system/theme/theme_values.xml",true);
 
                             ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui theme_values.xml",true);
+
+                            ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                            ShellUtils.execCommand("/system/xbin/busybox sed -i '/string name=\"megabyte_per_second\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                            ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <string name=\\\"megabyte_per_second\\\">" + "M's" +"<\\/string>/\" /data/system/theme/nightmode/theme_values.xml",true);
+
+                            ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui nightmode/theme_values.xml",true);
+
                             ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
 
                         }
@@ -739,6 +995,13 @@ public String icon_status;
                                         ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <string name=\\\"kilobyte_per_second\\\">" + input +"<\\/string>/\" /data/system/theme/theme_values.xml",true);
 
                                         ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui theme_values.xml",true);
+
+                                        ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                                        ShellUtils.execCommand("/system/xbin/busybox sed -i '/string name=\"kilobyte_per_second\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                                        ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <string name=\\\"kilobyte_per_second\\\">" + input +"<\\/string>/\" /data/system/theme/nightmode/theme_values.xml",true);
+
+                                        ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui nightmode/theme_values.xml",true);
+
                                         ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
 
                                     }
@@ -759,6 +1022,14 @@ public String icon_status;
                             ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <string name=\\\"kilobyte_per_second\\\">" + "K's" +"<\\/string>/\" /data/system/theme/theme_values.xml",true);
 
                             ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui theme_values.xml",true);
+
+                            ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                            ShellUtils.execCommand("/system/xbin/busybox sed -i '/string name=\"kilobyte_per_second\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                            ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <string name=\\\"kilobyte_per_second\\\">" + "K's" +"<\\/string>/\" /data/system/theme/nightmode/theme_values.xml",true);
+
+                            ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui nightmode/theme_values.xml",true);
+
+
                             ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
 
                         }

@@ -13,7 +13,6 @@
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

@@ -22,7 +22,6 @@ public class AboutFragment extends PreferenceFragment implements OnPreferenceCha
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.mainabout);
         additem();
-
     }
 
     @Override

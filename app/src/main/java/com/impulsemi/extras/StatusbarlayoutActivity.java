@@ -19,6 +19,10 @@ public class StatusbarlayoutActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle bundle) {
+        if(MainActivity.isPass!=1)
+        {
+            finish();
+        }
         setTheme(miui.R.style.Theme_Light_Settings);
         super.onCreate(bundle);
         setTitle("状态栏布局修改");
@@ -102,6 +106,16 @@ public class StatusbarlayoutActivity extends Activity {
                 ShellUtils.execCommand("/system/xbin/busybox sed -i '/integer name=\"quick_settings_qqs_count\"/d' /data/system/theme/theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <integer name=\\\"quick_settings_qqs_count\\\">" + a +"<\\/integer>/\" /data/system/theme/theme_values.xml",true);
 
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/integer name=\"quick_settings_num_columns\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <integer name=\\\"quick_settings_num_columns\\\">" + x +"<\\/integer>/\" /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/integer name=\"quick_settings_num_rows\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <integer name=\\\"quick_settings_num_rows\\\">" + y +"<\\/integer>/\" /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/integer name=\"quick_settings_qqs_count\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <integer name=\\\"quick_settings_qqs_count\\\">" + a +"<\\/integer>/\" /data/system/theme/nightmode/theme_values.xml",true);
+
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui nightmode/theme_values.xml",true);
+
                 ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
 
@@ -122,6 +136,16 @@ public class StatusbarlayoutActivity extends Activity {
                 ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <integer name=\\\"quick_settings_num_rows\\\">" + y +"<\\/integer>/\" /data/system/theme/theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox sed -i '/integer name=\"quick_settings_qqs_count\"/d' /data/system/theme/theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <integer name=\\\"quick_settings_qqs_count\\\">" + a +"<\\/integer>/\" /data/system/theme/theme_values.xml",true);
+
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/integer name=\"quick_settings_num_columns\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <integer name=\\\"quick_settings_num_columns\\\">" + x +"<\\/integer>/\" /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/integer name=\"quick_settings_num_rows\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <integer name=\\\"quick_settings_num_rows\\\">" + y +"<\\/integer>/\" /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/integer name=\"quick_settings_qqs_count\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <integer name=\\\"quick_settings_qqs_count\\\">" + a +"<\\/integer>/\" /data/system/theme/nightmode/theme_values.xml",true);
+
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui nightmode/theme_values.xml",true);
 
                 ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui theme_values.xml",true);
                 ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);

@@ -23,6 +23,9 @@ import android.text.SpannableString;
 import android.text.method.DigitsKeyListener;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+
 import com.impulsemi.extras.util.ToastUtil;
 
 import org.jetbrains.annotations.Nullable;
@@ -122,6 +125,7 @@ public class CommonFragment extends PreferenceFragment implements OnPreferenceCh
     //获取当天步数
     private void getTodayStep() {
        new Thread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void run() {
                 try {
@@ -279,6 +283,14 @@ public class CommonFragment extends PreferenceFragment implements OnPreferenceCh
                 ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <dimen name=\\\"workspace_icon_text_size\\\">" + "0sp" + "<\\/dimen>/\" /data/system/theme/theme_values.xml", true);
 
                 ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.miui.home theme_values.xml", true);
+
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.miui.home nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/dimen name=\"workspace_icon_text_size\"/d' /data/system/theme/nightmode/theme_values.xml", true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <dimen name=\\\"workspace_icon_text_size\\\">" + "0sp" + "<\\/dimen>/\" /data/system/theme/nightmode/theme_values.xml", true);
+
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.miui.home nightmode/theme_values.xml", true);
+
+
                 try {
                     forceStopApp("com.miui.home");
                 } catch (ClassNotFoundException e) {
@@ -301,6 +313,14 @@ public class CommonFragment extends PreferenceFragment implements OnPreferenceCh
                 //ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <dimen name=\\\"workspace_icon_text_size\\\">" + "0sp" + "<\\/dimen>/\" /data/system/theme/theme_values.xml", true);
 
                 ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.miui.home theme_values.xml", true);
+
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.miui.home nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/dimen name=\"workspace_icon_text_size\"/d' /data/system/theme/nightmode/theme_values.xml", true);
+                //ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <dimen name=\\\"workspace_icon_text_size\\\">" + "0sp" + "<\\/dimen>/\" /data/system/theme/theme_values.xml", true);
+
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.miui.home nightmode/theme_values.xml", true);
+
+
                 try {
                     forceStopApp("com.miui.home");
                 } catch (ClassNotFoundException e) {
@@ -329,6 +349,16 @@ public class CommonFragment extends PreferenceFragment implements OnPreferenceCh
                 //ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <color name=\\\"icon_shadow\\\">" + "#ff000000" + "<\\/color>/\" /data/system/theme/theme_values.xml", true);
 
                 ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.miui.home theme_values.xml", true);
+
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.miui.home nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/bool name=\"config_enable_icon_shadow\"/d' /data/system/theme/nightmode/theme_values.xml", true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"config_enable_icon_shadow\\\">" + "true" + "<\\/bool>/\" /data/system/theme/nightmode/theme_values.xml", true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/color name=\"icon_shadow\"/d' /data/system/theme/nightmode/theme_values.xml", true);
+                //ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <color name=\\\"icon_shadow\\\">" + "#ff000000" + "<\\/color>/\" /data/system/theme/theme_values.xml", true);
+
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.miui.home nightmode/theme_values.xml", true);
+
+
                 try {
                     forceStopApp("com.miui.home");
                 } catch (ClassNotFoundException e) {
@@ -353,6 +383,15 @@ public class CommonFragment extends PreferenceFragment implements OnPreferenceCh
                 //ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <color name=\\\"icon_shadow\\\">" + "#ff000000" + "<\\/color>/\" /data/system/theme/theme_values.xml", true);
 
                 ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.miui.home theme_values.xml", true);
+
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.miui.home nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/bool name=\"config_enable_icon_shadow\"/d' /data/system/theme/nightmode/theme_values.xml", true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"config_enable_icon_shadow\\\">" + "false" + "<\\/bool>/\" /data/system/theme/nightmode/theme_values.xml", true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/color name=\"icon_shadow\"/d' /data/system/theme/nightmode/theme_values.xml", true);
+                //ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <color name=\\\"icon_shadow\\\">" + "#ff000000" + "<\\/color>/\" /data/system/theme/theme_values.xml", true);
+
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.miui.home nightmode/theme_values.xml", true);
+
                 try {
                     forceStopApp("com.miui.home");
                 } catch (ClassNotFoundException e) {

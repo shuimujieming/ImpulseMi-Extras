@@ -10,6 +10,12 @@
         <item>隐藏卡1</item>
         <item>隐藏卡2</item>
     </array>
+    <array name="network_dual">
+        <item>关闭双排网速</item>
+        <item>仅显示上传</item>
+        <item>仅显示下载</item>
+        <item>同时显示上传和下载</item>
+    </array>
     <string name="is_freeze">已冻结</string>
     <string name="is_not_freeze">未冻结</string>
     <string name="dialog_title">警告</string>

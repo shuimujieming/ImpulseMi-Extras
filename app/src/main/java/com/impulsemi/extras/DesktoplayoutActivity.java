@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -18,8 +19,13 @@ import miui.app.Activity;
 public class DesktoplayoutActivity extends Activity {
     @Override
     protected void onCreate(Bundle bundle) {
+        if(MainActivity.isPass!=1)
+        {
+            finish();
+        }
         setTheme(miui.R.style.Theme_Light_Settings);
         super.onCreate(bundle);
+
         setTitle("桌面布局修改");
         setContentView(R.layout.desktop_layout);
         final SeekBar seekBar_x = findViewById(R.id.desktop_x);
@@ -102,6 +108,16 @@ public class DesktoplayoutActivity extends Activity {
                 ShellUtils.execCommand("/system/xbin/busybox sed -i '/integer name=\"config_folder_columns_count\"/d' /data/system/theme/theme_values.xml", true);
                 ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <integer name=\\\"config_folder_columns_count\\\">" + z + "<\\/integer>/\" /data/system/theme/theme_values.xml", true);
 
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.miui.home nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/integer name=\"config_cell_count_y\"/d' /data/system/theme/nightmode/theme_values.xml", true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <integer name=\\\"config_cell_count_y\\\">" + y + "<\\/integer>/\" /data/system/theme/nightmode/theme_values.xml", true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/integer name=\"config_cell_count_x\"/d' /data/system/theme/nightmode/theme_values.xml", true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <integer name=\\\"config_cell_count_x\\\">" + x + "<\\/integer>/\" /data/system/theme/nightmode/theme_values.xml", true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/integer name=\"config_folder_columns_count\"/d' /data/system/theme/nightmode/theme_values.xml", true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <integer name=\\\"config_folder_columns_count\\\">" + z + "<\\/integer>/\" /data/system/theme/nightmode/theme_values.xml", true);
+
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.miui.home nightmode/theme_values.xml", true);
+
                 ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.miui.home theme_values.xml", true);
                 try {
                     forceStopApp("com.miui.home");
@@ -132,6 +148,16 @@ public class DesktoplayoutActivity extends Activity {
                 ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <integer name=\\\"config_cell_count_x\\\">" + x + "<\\/integer>/\" /data/system/theme/theme_values.xml", true);
                 ShellUtils.execCommand("/system/xbin/busybox sed -i '/integer name=\"config_folder_columns_count\"/d' /data/system/theme/theme_values.xml", true);
                 ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <integer name=\\\"config_folder_columns_count\\\">" + z + "<\\/integer>/\" /data/system/theme/theme_values.xml", true);
+
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.miui.home nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/integer name=\"config_cell_count_y\"/d' /data/system/theme/nightmode/theme_values.xml", true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <integer name=\\\"config_cell_count_y\\\">" + y + "<\\/integer>/\" /data/system/theme/nightmode/theme_values.xml", true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/integer name=\"config_cell_count_x\"/d' /data/system/theme/nightmode/theme_values.xml", true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <integer name=\\\"config_cell_count_x\\\">" + x + "<\\/integer>/\" /data/system/theme/nightmode/theme_values.xml", true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/integer name=\"config_folder_columns_count\"/d' /data/system/theme/nightmode/theme_values.xml", true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <integer name=\\\"config_folder_columns_count\\\">" + z + "<\\/integer>/\" /data/system/theme/nightmode/theme_values.xml", true);
+
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.miui.home nightmode/theme_values.xml", true);
 
                 ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.miui.home theme_values.xml", true);
                 try {

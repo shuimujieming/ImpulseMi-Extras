@@ -6,20 +6,7 @@
     >
     <PreferenceCategory
         android:key="system_content"
-        android:title="系统优化">
-        <Preference
-            android:key="app_freeze"
-            android:title="应用冻结">
-            <intent
-                android:targetPackage="com.impulsemi.extras"
-                android:action="android.intent.action.MAIN"
-                android:targetClass="com.impulsemi.extras.FreezeActivity"/>
-        </Preference>
-        <Preference
-            android:title="运动步数修改"
-            android:key="running_steps"
-            />
-
+        android:title="系统修改">
         <CheckBoxPreference
             android:icon="@mipmap/ic_power"
             android:defaultValue="0"
@@ -34,10 +21,22 @@
             android:title="黑域"
             android:summaryOn="已激活"
             android:summaryOff="已关闭" />
+        <Preference
+            android:key="app_freeze"
+            android:title="应用冻结">
+            <intent
+                android:targetPackage="com.impulsemi.extras"
+                android:action="android.intent.action.MAIN"
+                android:targetClass="com.impulsemi.extras.FreezeActivity"/>
+        </Preference>
+        <Preference
+            android:title="运动步数修改"
+            android:key="running_steps"
+            />
         <CheckBoxPreference
             android:defaultValue="0"
             android:key="finger_unlock"
-            android:title="开机第一次指纹解锁"
+            android:title="开机指纹解锁"
            />
         <Preference
             android:title="充电动画切换"
@@ -46,7 +45,6 @@
     </PreferenceCategory>
  <PreferenceCategory
      android:title="电池设置">
-
      <Preference
          android:icon="@mipmap/ic_power_mask"
          android:title="电量伪装"
@@ -129,9 +127,8 @@
             android:title="开启图标阴影"
             android:key="desktop_icon_shadow" />
     </PreferenceCategory>
-
     <PreferenceCategory
-        android:title="其它功能">
+        android:title="息屏设置">
         <CheckBoxPreference
             android:icon="@mipmap/ic_weather"
             android:enabled="true"
@@ -153,30 +150,28 @@
         <CheckBoxPreference
             android:title="息屏彩色通知图标切换"
             android:key="aod_icon_color"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="其它功能">
         <Preference
             android:title="窗口动画缩放速度"
-            android:key="window_animation"
-            />
+            android:key="window_animation" />
         <Preference
             android:title="过渡动画缩放速度"
-            android:key="change_animation"
-            />
+            android:key="change_animation" />
         <Preference
             android:title="Animation动画时长调节"
-            android:key="time_animation"
-            />
+            android:key="time_animation" />
         <Preference
             android:title="自定义音量级数"
-            android:key="vol_set"
-            />
+            android:key="vol_set" />
         <Preference
             android:icon="@mipmap/ic_monitor_dpi"
             android:title="修改屏幕密度"
             android:key="screen_dpi"/>
-
         <Preference
             android:icon="@mipmap/ic_notice"
-            android:title="通知日志"
+            android:title="通知日志查看"
             android:key="notice_diary"/>
         <Preference
             android:icon="@mipmap/ic_wifi_password"
