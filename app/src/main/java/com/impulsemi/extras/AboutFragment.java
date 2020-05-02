@@ -1,5 +1,7 @@
 package com.impulsemi.extras;
 
+import android.animation.ObjectAnimator;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,9 +11,14 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.provider.Settings;
+import android.text.SpannableString;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import org.jetbrains.annotations.Nullable;
+
+import miui.app.AlertDialog;
 
 public class AboutFragment extends PreferenceFragment implements OnPreferenceChangeListener {
     long fristTime=0;
@@ -22,6 +29,7 @@ public class AboutFragment extends PreferenceFragment implements OnPreferenceCha
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.mainabout);
         additem();
+
     }
 
     @Override
@@ -62,6 +70,16 @@ if(preference.getKey().equals("pay"))
 
 }
         if(preference.getKey().equals("help")) {
+
+            new AlertDialog.Builder(getContext())
+                    .setTitle("温馨提示")
+                    .setView(R.layout.teamlogo)
+                    .setCancelable(true)
+                    .setMessage("欢迎您使用 ImpulseMi 官改作品！\n" +
+                                    "使用此软件时请保持Root权限，否则无法打开!\n" +
+                                    "请勿将包传给未上车的小伙伴，否则后果自负！"
+                            )
+                    .show();
             // TODO: 2020/4/15
             //来源于谷歌源码
             // arraycopy 拷贝数组
@@ -76,15 +94,14 @@ if(preference.getKey().equals("pay"))
             //获取离开机的时间
             mHits[mHits.length - 1] = SystemClock.uptimeMillis();
             //单击时间的间隔，以500毫秒为临界值
-            if (mHits[0] >= (SystemClock.uptimeMillis() - 500)) {
+            if (mHits[0] >= (SystemClock.uptimeMillis() - 500))
+            {
                 Settings.System.putInt(getContext().getContentResolver(),"impulse_drive_mode",Settings.System.getInt(getContext().getContentResolver(),"impulse_drive_mode",0)==0?1:0);
-
                 int i = Settings.System.getInt(getContext().getContentResolver(),"impulse_drive_mode",0);
-
                 if(i==1)
                 {
-                Intent intent = new Intent("com.miui.app.ExtraStatusBarManager.action_enter_drive_mode");
-                getContext().sendBroadcast(intent);
+                    Intent intent = new Intent("com.miui.app.ExtraStatusBarManager.action_enter_drive_mode");
+                    getContext().sendBroadcast(intent);
                 }
                 else
                 {
@@ -96,7 +113,6 @@ if(preference.getKey().equals("pay"))
                 //把数组置为空并重写初始化，为下一次三击（双击或多击）做准备
                 mHits = null;
                 mHits = new long[3];
-
             }
         }
 if(preference.getKey().equals("shuimujieming"))

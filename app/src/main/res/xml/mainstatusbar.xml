@@ -24,12 +24,15 @@
         android:key="weather_active_big"
         android:title="状态栏横屏天气" />
     <CheckBoxPreference
+        android:icon="@mipmap/ic_weather_location"
         android:title="天气地区"
         android:key="weather_region"/>
     <CheckBoxPreference
+        android:icon="@mipmap/ic_weather_content"
         android:title="天气情况"
         android:key="weather_content"/>
     <CheckBoxPreference
+        android:icon="@mipmap/ic_weather_temp"
         android:title="天气温度"
         android:key="weather_temp"/>
 </PreferenceCategory>
@@ -37,18 +40,21 @@
         android:key="statusbar"
         android:title="状态栏">
         <Preference
-            android:icon="@mipmap/ic_desktop_layout"
+            android:icon="@mipmap/ic_status_bar"
             android:title="状态栏布局"
             android:key="statusbar_layout" />
         <CheckBoxPreference
+            android:icon="@mipmap/ic_telecom"
             android:title="显示运营商"
             android:key="show_telecom" />
         <CheckBoxPreference
+            android:icon="@mipmap/ic_notification"
             android:title="通知合并展开"
             android:summaryOff="已合并"
             android:summaryOn="已展开"
             android:key="notification_show" />
         <Preference
+            android:icon="@mipmap/icon_status_text_size"
             android:title="状态栏文字大小"
             android:key="status_bar_word"/>
         <CheckBoxPreference
@@ -57,12 +63,12 @@
             android:key="statusbar_style"
             />
         <CheckBoxPreference
-            android:icon="@mipmap/ic_statusbar_style"
+            android:icon="@mipmap/ic_colorful"
             android:title="显示彩色图标"
             android:key="icon_color"
             />
         <CheckBoxPreference
-            android:icon="@mipmap/ic_statusbar_style"
+            android:icon="@mipmap/ic_gray"
             android:title="显示灰色通知条"
             android:key="icon_color_gray"
             />
@@ -80,20 +86,19 @@
             android:key="signal_double"
             android:title="双排信号" />
         <Preference
-            android:title="SIM卡单卡隐藏"
+            android:icon="@mipmap/ic_sim"
+            android:title="SIM卡隐藏"
             android:key="signal_single" />
         <CheckBoxPreference
+            android:icon="@mipmap/ic_hd"
             android:defaultValue="0"
             android:key="dis_hd"
             android:title="隐藏HD" />
         <CheckBoxPreference
+            android:icon="@mipmap/ic_4g"
             android:defaultValue="0"
             android:key="dis_4g"
             android:title="隐藏4G图标" />
-        <CheckBoxPreference
-            android:icon="@mipmap/ic_statusbar_hide"
-            android:title="状态栏隐藏信号"
-            android:key="statusbar_hide_mobile"/>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="状态栏图标隐藏">
@@ -101,36 +106,32 @@
             android:icon="@mipmap/ic_statusbar_hide"
             android:title="隐藏状态栏"
             android:key="statusbar_hide"/>
-
         <CheckBoxPreference
-            android:key="notification_icons"
-            android:title="状态栏图标隐藏" />
-        <CheckBoxPreference
-            android:icon="@mipmap/ic_statusbar_hide"
+            android:icon="@mipmap/ic_icon_alarm"
             android:title="状态栏隐藏闹钟"
             android:key="statusbar_hide_alarm_clock"/>
         <CheckBoxPreference
-            android:icon="@mipmap/ic_statusbar_hide"
+            android:icon="@mipmap/ic_icon_bluetooth"
             android:title="状态栏隐藏蓝牙"
             android:key="statusbar_hide_bluetooth"/>
         <CheckBoxPreference
-            android:icon="@mipmap/ic_statusbar_hide"
+            android:icon="@mipmap/ic_icon_volume"
             android:title="状态栏隐藏音量"
             android:key="statusbar_hide_volume"/>
         <CheckBoxPreference
-            android:icon="@mipmap/ic_statusbar_hide"
+            android:icon="@mipmap/ic_icon_airmodel"
             android:title="状态栏隐藏飞行模式"
             android:key="statusbar_hide_airplane"/>
         <CheckBoxPreference
-            android:icon="@mipmap/ic_statusbar_hide"
+            android:icon="@mipmap/ic_icon_locate"
             android:title="状态栏隐藏定位"
             android:key="statusbar_hide_location"/>
         <CheckBoxPreference
-            android:icon="@mipmap/ic_statusbar_hide"
+            android:icon="@mipmap/ic_icon_headset"
             android:title="状态栏隐藏耳机"
             android:key="statusbar_hide_headset"/>
         <CheckBoxPreference
-            android:icon="@mipmap/ic_statusbar_hide"
+            android:icon="@mipmap/ic_icon_wifi"
             android:title="状态栏隐藏WIFI"
             android:key="statusbar_hide_wifi"/>
 
@@ -138,14 +139,17 @@
     <PreferenceCategory
         android:title="电池图标设置">
         <CheckBoxPreference
+            android:icon="@mipmap/ic_icon_percent"
             android:defaultValue="0"
             android:key="power_percent"
             android:title="电池百分号去除" />
         <CheckBoxPreference
+            android:icon="@mipmap/ic_icon_power_style"
             android:defaultValue="0"
             android:key="power_style"
             android:title="电池样式切换" />
         <CheckBoxPreference
+            android:icon="@mipmap/ic_icon_power"
             android:defaultValue="0"
             android:key="power_show"
             android:title="电池去除" />
@@ -153,34 +157,42 @@
     <PreferenceCategory
         android:title="状态栏胶囊通知">
             <CheckBoxPreference
+                android:icon="@mipmap/ic_jiaonang"
                 android:defaultValue="0"
                 android:key="notch_left"
                 android:title="定位中以及其它图标全部去除" />
             <CheckBoxPreference
+                android:icon="@mipmap/ic_jiaonang"
                 android:defaultValue="0"
                 android:key="notch_left_locate"
                 android:title="定位中去除" />
             <CheckBoxPreference
+                android:icon="@mipmap/ic_jiaonang"
                 android:defaultValue="0"
                 android:key="notch_left_call"
                 android:title="通话中去除" />
             <CheckBoxPreference
+                android:icon="@mipmap/ic_jiaonang"
                 android:defaultValue="0"
                 android:key="notch_left_record"
                 android:title="录音中去除" />
             <CheckBoxPreference
+                android:icon="@mipmap/ic_jiaonang"
                 android:defaultValue="0"
                 android:key="notch_left_drive"
                 android:title="驾车中去除" />
             <CheckBoxPreference
+                android:icon="@mipmap/ic_jiaonang"
                 android:defaultValue="0"
                 android:key="notch_left_multi"
                 android:title="Multi去除" />
             <CheckBoxPreference
+                android:icon="@mipmap/ic_jiaonang"
                 android:defaultValue="0"
                 android:key="notch_left_safe"
                 android:title="安全中心去除" />
             <CheckBoxPreference
+                android:icon="@mipmap/ic_jiaonang"
                 android:defaultValue="0"
                 android:key="notch_left_sos"
                 android:title="SOS去除" />
@@ -189,9 +201,11 @@
             <PreferenceCategory
                 android:title="时钟设置">
                 <Preference
+                    android:icon="@mipmap/ic_time_12"
                     android:title="时钟12H格式设置"
                     android:key="timer_12"/>
                 <Preference
+                    android:icon="@mipmap/ic_time_24"
                     android:title="时钟24H格式设置"
                     android:key="timer_24"/>
             <CheckBoxPreference
@@ -212,12 +226,15 @@
             <PreferenceCategory
            android:title="网速设置" >
             <Preference
+                android:icon="@mipmap/ic_network_dual"
                     android:title="双排网速"
                     android:key="network_dual_type"/>
              <Preference
+                 android:icon="@mipmap/ic_network_up"
                     android:title="上传箭头自定义"
                     android:key="network_dual_up"/>
              <Preference
+                 android:icon="@mipmap/ic_network_down"
                     android:title="下载箭头自定义"
                     android:key="network_dual_down"/>
             <CheckBoxPreference
@@ -226,7 +243,7 @@
             android:key="network_right"
             android:title="网速右显" />
             <CheckBoxPreference
-                android:icon="@mipmap/ic_network_speed"
+                android:icon="@mipmap/ic_network_gap"
                 android:defaultValue="0"
                 android:key="status_line"
                 android:title="状态栏网速分割线" />
@@ -235,9 +252,11 @@
             android:title="网速刷新率自定义"
             android:key="network_interval"/>
             <Preference
+                android:icon="@mipmap/ic_network_k"
                 android:title="网速K/s自定义"
                 android:key="network_word_k"/>
             <Preference
+                android:icon="@mipmap/ic_network_m"
                 android:title="网速M/s每秒自定义"
                 android:key="network_word_m"/>
 
@@ -245,12 +264,15 @@
             <PreferenceCategory
                 android:title="线性电池">
                 <CheckBoxPreference
+                    android:icon="@mipmap/ic_line_battery"
                     android:title="线性电池开关"
                     android:key="line_switch"/>
                 <Preference
+                    android:icon="@mipmap/ic_line_battery_width"
                     android:title="线性电池宽度"
                     android:key="line_width"/>
                 <Preference
+                    android:icon="@mipmap/ic_line_battery_color"
                     android:title="线性电池颜色"
                     android:key="line_color"/>
             </PreferenceCategory>

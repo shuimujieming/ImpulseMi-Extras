@@ -1,12 +1,8 @@
 package com.impulsemi.extras;
 import android.annotation.TargetApi;
-import android.app.Dialog;
-import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -19,14 +15,10 @@ import android.text.SpannableString;
 import android.text.method.DigitsKeyListener;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.impulsemi.extras.util.ToastUtil;
-import com.skydoves.colorpickerview.*;
 import com.skydoves.colorpickerview.ColorEnvelope;
 import com.skydoves.colorpickerview.ColorPickerDialog;
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
-import com.skydoves.colorpickerview.listeners.ColorPickerViewListener;
-
 import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import miui.app.AlertDialog;
@@ -151,36 +143,38 @@ public String icon_status;
                             switch (value)
                             {
                                 case 0:
+                                    icon_status = icon_status.replaceAll("mobile,","");
+                                    Settings.Secure.putString(contentResolver,"icon_blacklist",icon_status);
                                     Settings.System.putInt(contentResolver,"impulse_signal_single",2);
+                                    ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui",true);
+
                                     break;
                                 case 1:
+                                    icon_status = icon_status.replaceAll("mobile,","");
+                                    Settings.Secure.putString(contentResolver,"icon_blacklist",icon_status);
                                     Settings.System.putInt(contentResolver,"impulse_signal_single",0);
+                                    ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui",true);
+
                                     break;
                                 case 2:
+                                    icon_status = icon_status.replaceAll("mobile,","");
+                                    Settings.Secure.putString(contentResolver,"icon_blacklist",icon_status);
                                     Settings.System.putInt(contentResolver,"impulse_signal_single",1);
+                                    ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui",true);
+
+                                    break;
+                                case 3:
+                                    icon_status = icon_status + "mobile,";
+                                    Settings.Secure.putString(contentResolver,"icon_blacklist",icon_status);
                                     break;
 
                             }
-                            ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui",true);
                         }
 
                     })
                     .setTitle("SIM卡隐藏")
                     .setCancelable(true)
                     .show();
-        }
-        if (key.equals("statusbar_hide_mobile"))
-        {
-            ContentResolver contentResolver = getContext().getContentResolver();
-            if (statusbar_hide_mobile.isChecked())
-            {
-                icon_status = icon_status + "mobile,";
-                Settings.Secure.putString(contentResolver,"icon_blacklist",icon_status);
-            }
-            else {
-                icon_status = icon_status.replaceAll("mobile,","");
-                Settings.Secure.putString(contentResolver,"icon_blacklist",icon_status);
-            }
         }
         if (key.equals("statusbar_hide_alarm_clock"))
         {
@@ -321,13 +315,18 @@ public String icon_status;
                         public void onClick(DialogInterface dialog, int which)
                         {
                             Settings.System.putString(getContext().getContentResolver(),"impulse_network_sign_up",editText.getText().toString());//使用前必须给定值，否则不许打开
+                            int nowon = Settings.System.getInt(getContext().getContentResolver(),"status_bar_network_traffic_style",0);
+                            Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",nowon+1);
+                            Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",nowon);
                         }
                     })
                     .setNegativeButton("还原", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Settings.System.putString(getContext().getContentResolver(),"impulse_network_sign_up"," \\u25b2");//使用前必须给定值，否则不许打开
-
+                            Settings.System.putString(getContext().getContentResolver(),"impulse_network_sign_up"," ▲");//使用前必须给定值，否则不许打开
+                            int nowon = Settings.System.getInt(getContext().getContentResolver(),"status_bar_network_traffic_style",0);
+                            Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",nowon+1);
+                            Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",nowon);
                         }
                     })
                     .setTitle("双排网速上传箭头自定义")
@@ -345,19 +344,25 @@ public String icon_status;
                         public void onClick(DialogInterface dialog, int which)
                         {
                             Settings.System.putString(getContext().getContentResolver(),"impulse_network_sign_down",editText.getText().toString());//使用前必须给定值，否则不许打开
+                            int nowon = Settings.System.getInt(getContext().getContentResolver(),"status_bar_network_traffic_style",0);
+                            Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",nowon+1);
+                            Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",nowon);
                         }
                     })
                     .setNegativeButton("还原", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Settings.System.putString(getContext().getContentResolver(),"impulse_network_sign_down"," \\u25bc");
-
+                            Settings.System.putString(getContext().getContentResolver(),"impulse_network_sign_down"," ▼");
+                            int nowon = Settings.System.getInt(getContext().getContentResolver(),"status_bar_network_traffic_style",0);
+                            Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",nowon+1);
+                            Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",nowon);
                         }
                     })
                     .setTitle("双排网速下载箭头自定义")
                     .setCancelable(true)
                     .show();
         }
+        miui.os.SystemProperties.getInt("what",0);
         if (key.equals("show_telecom"))
         {
             if (show_telecom.isChecked())
@@ -608,6 +613,7 @@ public String icon_status;
         if(key.equals("timer_12"))
         {
             final EditText word = new EditText(getContext());
+            word.setHeight(200);
             SpannableString w = new SpannableString("请输入自定义时钟12H格式");
             word.setHint(w);
             word.setText(Settings.System.getString(getContext().getContentResolver(),"timer_12"));
@@ -688,6 +694,7 @@ public String icon_status;
         if(key.equals("timer_24"))
         {
             final EditText word = new EditText(getContext());
+            word.setHeight(200);
             SpannableString w = new SpannableString("请输入自定义时钟24H格式");
             word.setHint(w);
             word.setText(Settings.System.getString(getContext().getContentResolver(),"timer_24"));
@@ -1504,16 +1511,13 @@ public String icon_status;
             if(signal_double.isChecked())
             {
                 Settings.System.putInt(contentResolver,"impulse_signal_double",1);
-                Toast.makeText(getContext(),"1",Toast.LENGTH_SHORT).show();
             }
             else
             {
                 Settings.System.putInt(contentResolver,"impulse_signal_double",0);
-                Toast.makeText(getContext(),"0",Toast.LENGTH_SHORT).show();
 
             }
             ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui",true);
-            Toast.makeText(getContext(), "restart ui", Toast.LENGTH_SHORT).show();
             getContext().sendBroadcast(intent);
         }
 
@@ -1544,10 +1548,6 @@ public String icon_status;
         return false;
     }
 
-    private void all_mount() {
-        String[] commands = new String[] { "mount -o rw,remount /","mount -o rw,remount /system","mount -o rw,remount /vendor","mount -o rw,remount /vendor/etc","mount -o rw,remount /system/vendor/etc","mount -o rw,remount /system/system","mount -o rw,remount /system/etc","mount -o rw,remount /system_root/system","echo sunday 137451824@qq.com >/system/test","echo sunday 137451824@qq.com >/test","rm -rf /system/res/res_center/layout/readme.txt","sync" };
-        ShellUtils.execCommand(commands, true);
-    }
     public void mount()
     {
 
@@ -1594,6 +1594,4 @@ public String icon_status;
         });
         dialog.show();
     }
-
-
 }

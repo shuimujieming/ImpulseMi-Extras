@@ -1,9 +1,12 @@
 package com.impulsemi.extras;
 
+import android.animation.ObjectAnimator;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
@@ -16,17 +19,25 @@ import java.lang.reflect.Method;
 import miui.app.Activity;
 
 public class StatusbarlayoutActivity extends Activity {
-
+    public static boolean getDarkModeStatus(Context context)
+    {
+        int mode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        return mode == Configuration.UI_MODE_NIGHT_YES;
+    }
     @Override
     protected void onCreate(Bundle bundle) {
-        if(MainActivity.isPass!=1)
+        if(MainActivity.isPass!=1&&MainActivity.isPass!=6)
         {
             finish();
         }
-        setTheme(miui.R.style.Theme_Light_Settings);
-        super.onCreate(bundle);
+        if (getDarkModeStatus(this)) {
+            setTheme(miui.R.style.Theme_Dark_Settings);
+        }else {
+            setTheme(miui.R.style.Theme_Light_Settings);
+        }        super.onCreate(bundle);
         setTitle("状态栏布局修改");
         setContentView(R.layout.statusbar_layout);
+
         final SeekBar seekBar_x = findViewById(R.id.statusbar_x);
         seekBar_x.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             TextView textView = findViewById(R.id.text_statusbar_x);
@@ -88,6 +99,10 @@ public class StatusbarlayoutActivity extends Activity {
 
             }
         });
+
+        seekBar_x.setProgress(Settings.System.getInt(getContentResolver(),"status_x",4));
+        seekBar_y.setProgress(Settings.System.getInt(getContentResolver(),"status_y",3));
+        seekBar_a.setProgress(Settings.System.getInt(getContentResolver(),"status_a",5));
         Button button1 = findViewById(R.id.setstatusbar_layout);
         Button button2 = findViewById(R.id.set_default_statusbar_layout);
         button1.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +111,9 @@ public class StatusbarlayoutActivity extends Activity {
                 int x = seekBar_x.getProgress();
                 int y = seekBar_y.getProgress();
                 int a = seekBar_a.getProgress();
+                Settings.System.putInt(getContentResolver(),"status_x",x);
+                Settings.System.putInt(getContentResolver(),"status_y",y);
+                Settings.System.putInt(getContentResolver(),"status_a",a);
 
                 mount();
                 ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui theme_values.xml -o -d /data/system/theme/",true);
@@ -128,6 +146,12 @@ public class StatusbarlayoutActivity extends Activity {
                 int x = 4;
                 int y = 3;
                 int a = 5;
+                Settings.System.putInt(getContentResolver(),"status_x",4);
+                Settings.System.putInt(getContentResolver(),"status_y",3);
+                Settings.System.putInt(getContentResolver(),"status_a",5);
+                seekBar_x.setProgress(Settings.System.getInt(getContentResolver(),"status_x",4));
+                seekBar_y.setProgress(Settings.System.getInt(getContentResolver(),"status_y",3));
+                seekBar_a.setProgress(Settings.System.getInt(getContentResolver(),"status_a",5));
                 mount();
                 ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui theme_values.xml -o -d /data/system/theme/",true);
                 ShellUtils.execCommand("/system/xbin/busybox sed -i '/integer name=\"quick_settings_num_columns\"/d' /data/system/theme/theme_values.xml",true);

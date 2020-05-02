@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -40,15 +41,23 @@ public class FilterListViewActivity extends Activity {
 	private boolean state = false;
 	private int getFilter = 1;
 	private Context mContext;
+	public static boolean getDarkModeStatus(Context context)
+	{
+		int mode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+		return mode == Configuration.UI_MODE_NIGHT_YES;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		if(MainActivity.isPass!=1)
+		if(MainActivity.isPass!=1&&MainActivity.isPass!=6)
 		{
 			finish();
 		}
-            setTheme(miui.R.style.Theme_Light_Settings);
-		super.onCreate(savedInstanceState);
+		if (getDarkModeStatus(this)) {
+			setTheme(miui.R.style.Theme_Dark_Settings);
+		}else {
+			setTheme(miui.R.style.Theme_Light_Settings);
+		}		super.onCreate(savedInstanceState);
 		setContentView(R.layout.applist_listview);
 		mContext = getBaseContext();
 		sp = getSharedPreferences("wl", Context.MODE_PRIVATE);

@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-
 android {
     signingConfigs {
         impulse {
@@ -36,7 +35,6 @@ android {
 }
 
 dependencies {
-
     implementation "com.github.skydoves:colorpickerview:2.1.6"
     // implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'org.jetbrains:annotations-java5:15.0'
@@ -62,3 +60,17 @@ allprojects {
         google()
     }
 }
+
+//查看方法总数
+buildscript {
+    repositories {
+        mavenCentral() // or jcenter()
+    }
+
+    dependencies {
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:1.0.2'
+    }
+}
+
+// make sure this line comes *after* you apply the Android plugin
+apply plugin: 'com.getkeepsafe.dexcount'

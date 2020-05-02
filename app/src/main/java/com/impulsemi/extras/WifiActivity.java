@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import miui.app.Activity;
@@ -20,15 +21,22 @@ public class WifiActivity extends Activity {
     ArrayList<Map<String, String>> mainList;
     Context context = this;
     String sPath;
-
+    public static boolean getDarkModeStatus(Context context)
+    {
+        int mode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        return mode == Configuration.UI_MODE_NIGHT_YES;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if(MainActivity.isPass!=1)
+        if(MainActivity.isPass!=1&&MainActivity.isPass!=6)
         {
             finish();
         }
-        setTheme(miui.R.style.Theme_Light_Settings);
-        super.onCreate(savedInstanceState);
+        if (getDarkModeStatus(this)) {
+            setTheme(miui.R.style.Theme_Dark_Settings);
+        }else {
+            setTheme(miui.R.style.Theme_Light_Settings);
+        }         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi);
         Intent intent = getIntent();
         if (Build.VERSION.SDK_INT >= 26) {

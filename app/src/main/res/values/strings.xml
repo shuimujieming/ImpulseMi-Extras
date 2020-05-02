@@ -3,12 +3,12 @@
     <array name="charge_show">
         <item>官方默认</item>
         <item>米10充电动画</item>
-        <item>黑鲨充电动画</item>
     </array>
     <array name="signal_single">
         <item>默认双卡</item>
         <item>隐藏卡1</item>
         <item>隐藏卡2</item>
+        <item>隐藏双卡</item>
     </array>
     <array name="network_dual">
         <item>关闭双排网速</item>

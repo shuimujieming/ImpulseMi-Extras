@@ -21,7 +21,14 @@
             android:title="黑域"
             android:summaryOn="已激活"
             android:summaryOff="已关闭" />
+        <CheckBoxPreference
+            android:icon="@mipmap/ic_finger"
+            android:defaultValue="0"
+            android:key="finger_unlock"
+            android:title="开机指纹解锁"
+            />
         <Preference
+            android:icon="@mipmap/ic_freeze"
             android:key="app_freeze"
             android:title="应用冻结">
             <intent
@@ -30,75 +37,36 @@
                 android:targetClass="com.impulsemi.extras.FreezeActivity"/>
         </Preference>
         <Preference
+            android:icon="@mipmap/ic_foot"
             android:title="运动步数修改"
             android:key="running_steps"
             />
-        <CheckBoxPreference
-            android:defaultValue="0"
-            android:key="finger_unlock"
-            android:title="开机指纹解锁"
-           />
         <Preference
             android:title="充电动画切换"
             android:icon="@mipmap/ic_charge_animation"
             android:key="charge_show"/>
     </PreferenceCategory>
- <PreferenceCategory
-     android:title="电池设置">
-     <Preference
-         android:icon="@mipmap/ic_power_mask"
-         android:title="电量伪装"
-         android:key="power_mask"/>
-     <Preference
-         android:icon="@mipmap/ic_power_save"
-         android:title="极致省电模式"
-         android:key="power_save"
-         >
-         <!-- android:targetPackage是应用程序的包名，而android:targetClass的路径在子包下的类 -->
-         <!-- android:targetPackage设置为子包，运行时则找不到Activity -->
-         <intent
-             android:action="ACTION_A_INTENT"
-             android:targetPackage="com.miui.powerkeeper"
-             android:targetClass="com.miui.powerkeeper.ui.ExtremePowerEntryActivity">
-         </intent>
-     </Preference>
-     <Preference
-         android:icon="@mipmap/ic_power_line"
-         android:title="耗电折线图"
-         android:key="power_details">
-         <intent
-             android:action="ACTION_A_INTENT"
-             android:targetPackage="com.miui.securitycenter"
-             android:targetClass="com.miui.powercenter.batteryhistory.BatteryHistoryDetailActivity">
-         </intent>
-     </Preference>
-     <Preference
-         android:icon="@mipmap/ic_power_info"
-         android:title="电池信息"
-         android:key="power_info">
-         <intent
-             android:action="ACTION_A_INTENT"
-             android:targetPackage="com.android.settings"
-             android:targetClass="com.android.settings.BatteryInfo">
-         </intent>
-     </Preference>
 
- </PreferenceCategory>
     <PreferenceCategory
         android:title="音效设置">
         <CheckBoxPreference
+            android:icon="@mipmap/ic_audio_1"
             android:key="charge_on"
             android:title="电源连接音效关闭"/>
         <CheckBoxPreference
+            android:icon="@mipmap/ic_audio_2"
             android:key="charge_off"
             android:title="电源断开音效关闭"/>
         <CheckBoxPreference
+            android:icon="@mipmap/ic_audio_3"
             android:key="charge_wireless"
             android:title="无线充电音效关闭"/>
         <CheckBoxPreference
+            android:icon="@mipmap/ic_audio_4"
             android:key="Bird_Notification"
             android:title="静音切换音效关闭"/>
         <CheckBoxPreference
+            android:icon="@mipmap/ic_audio_5"
             android:key="low_power"
             android:title="低电量音效关闭"/>
 
@@ -107,7 +75,7 @@
     <PreferenceCategory
         android:title="桌面修改">
         <CheckBoxPreference
-            android:icon="@mipmap/ic_desktop_layout"
+            android:icon="@mipmap/ic_title_dock"
             android:title="桌面底栏标题"
             android:key="desktop_bottom_title" />
         <Preference
@@ -115,15 +83,15 @@
             android:title="桌面布局"
             android:key="desktop_layout" />
         <Preference
-            android:icon="@mipmap/ic_desktop_layout"
+            android:icon="@mipmap/ic_baitiao"
             android:title="小白条修改"
             android:key="navigation_layout" />
         <CheckBoxPreference
-            android:icon="@mipmap/ic_desktop_layout"
+            android:icon="@mipmap/ic_title_home"
             android:title="隐藏桌面图标标题"
             android:key="desktop_icon_title" />
         <CheckBoxPreference
-            android:icon="@mipmap/ic_desktop_layout"
+            android:icon="@mipmap/ic_home_shadow"
             android:title="开启图标阴影"
             android:key="desktop_icon_shadow" />
     </PreferenceCategory>
@@ -139,30 +107,38 @@
             android:key="aod_weather_active_big"
             android:title="息屏天气" />
         <CheckBoxPreference
+            android:icon="@mipmap/ic_weather_location"
             android:title="天气地区"
             android:key="aod_weather_region"/>
         <CheckBoxPreference
+            android:icon="@mipmap/ic_weather_content"
             android:title="天气情况"
             android:key="aod_weather_content"/>
         <CheckBoxPreference
+            android:icon="@mipmap/ic_weather_temp"
             android:title="天气温度"
             android:key="aod_weather_temp"/>
         <CheckBoxPreference
+            android:icon="@mipmap/ic_colorful"
             android:title="息屏彩色通知图标切换"
             android:key="aod_icon_color"/>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="其它功能">
         <Preference
+            android:icon="@mipmap/ic_window_animate"
             android:title="窗口动画缩放速度"
             android:key="window_animation" />
         <Preference
+            android:icon="@mipmap/ic_leap_animate"
             android:title="过渡动画缩放速度"
             android:key="change_animation" />
         <Preference
+            android:icon="@mipmap/ic_animation"
             android:title="Animation动画时长调节"
             android:key="time_animation" />
         <Preference
+            android:icon="@mipmap/ic_volume_steps"
             android:title="自定义音量级数"
             android:key="vol_set" />
         <Preference
@@ -183,5 +159,46 @@
                 android:targetClass="com.impulsemi.extras.WifiActivity">
             </intent>
         </Preference>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="电池设置">
+        <Preference
+            android:icon="@mipmap/ic_power_mask"
+            android:title="电量伪装"
+            android:key="power_mask"/>
+        <Preference
+            android:icon="@mipmap/ic_power_save"
+            android:title="极致省电模式"
+            android:key="power_save"
+            >
+            <!-- android:targetPackage是应用程序的包名，而android:targetClass的路径在子包下的类 -->
+            <!-- android:targetPackage设置为子包，运行时则找不到Activity -->
+            <intent
+                android:action="ACTION_A_INTENT"
+                android:targetPackage="com.miui.powerkeeper"
+                android:targetClass="com.miui.powerkeeper.ui.ExtremePowerEntryActivity">
+            </intent>
+        </Preference>
+        <Preference
+            android:icon="@mipmap/ic_power_line"
+            android:title="耗电折线图"
+            android:key="power_details">
+            <intent
+                android:action="ACTION_A_INTENT"
+                android:targetPackage="com.miui.securitycenter"
+                android:targetClass="com.miui.powercenter.batteryhistory.BatteryHistoryDetailActivity">
+            </intent>
+        </Preference>
+        <Preference
+            android:icon="@mipmap/ic_power_info"
+            android:title="电池信息"
+            android:key="power_info">
+            <intent
+                android:action="ACTION_A_INTENT"
+                android:targetPackage="com.android.settings"
+                android:targetClass="com.android.settings.BatteryInfo">
+            </intent>
+        </Preference>
+
     </PreferenceCategory>
 </PreferenceScreen>

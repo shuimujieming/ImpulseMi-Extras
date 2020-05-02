@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -30,18 +31,24 @@ public class FreezeActivity extends Activity {
 	public static final int SYS_APP = 1;
 	public static final int USERS_APP = 2;
 	public static final int FREEZED_APP = 3;
-	
 
+	public static boolean getDarkModeStatus(Context context)
+	{
+		int mode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+		return mode == Configuration.UI_MODE_NIGHT_YES;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		if(MainActivity.isPass!=1)
+		if(MainActivity.isPass!=1&&MainActivity.isPass!=6)
 		{
 			finish();
 		}
-		{
-		{ setTheme(miui.R.style.Theme_Light_Settings);
-		super.onCreate(savedInstanceState);
+		if (getDarkModeStatus(this)) {
+			setTheme(miui.R.style.Theme_Dark_Settings);
+		}else {
+			setTheme(miui.R.style.Theme_Light_Settings);
+		}		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_freeze);
 		setTitle("应用冻结");
 		
@@ -113,7 +120,7 @@ public class FreezeActivity extends Activity {
 				}.start();
 			}
 		});
-	}}}
+	}
 	
 	/**
 	 * @param filter 1--> all app; 2--> user instatlled app
