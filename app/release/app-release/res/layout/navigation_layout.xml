@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:textSize="20.0sp" android:layout_gravity="center" android:id="@id/text_navigation_a" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="小白条粗细" />
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <SeekBar android:id="@id/navigation_a" android:layout_width="fill_parent" android:layout_height="wrap_content" android:max="20" />
+    </LinearLayout>
+    <TextView android:textSize="20.0sp" android:layout_gravity="center" android:id="@id/text_navigation_x" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="50.0dip" android:text="小白条高度" />
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <SeekBar android:id="@id/navigation_x" android:layout_width="fill_parent" android:layout_height="wrap_content" android:max="15" />
+    </LinearLayout>
+    <TextView android:textSize="20.0sp" android:layout_gravity="center" android:id="@id/text_navigation_y" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="50.0dip" android:text="小白条长度" />
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <SeekBar android:id="@id/navigation_y" android:layout_width="fill_parent" android:layout_height="wrap_content" android:max="381" />
+    </LinearLayout>
+    <Button android:id="@id/setnavigation_layout" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="50.0dip" android:text="设置小白条外观" />
+    <Button android:id="@id/set_default_navigation_layout" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="50.0dip" android:text="恢复默认小白条外观" />
+</LinearLayout>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="bar_style_mode" />
+    <style name="bar_style_value" />
+    <style name="charge_show" />
+    <style name="network_dual" />
+    <style name="signal_single" />
+</resources>

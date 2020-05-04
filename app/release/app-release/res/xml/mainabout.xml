@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen android:title="ImpulseMi Extras" android:key="about_options"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:key="relative">
+        <Preference android:layout="@layout/teamtext" android:key="ming" />
+        <Preference android:icon="@mipmap/ic_team_whitegold" android:title="Whitegold" android:key="whitegold" android:summary="队长 / 工具人">
+            <intent android:action="android.intent.action.VIEW" android:data="http://www.coolapk.com/u/1533931" />
+        </Preference>
+        <Preference android:icon="@mipmap/ic_team_jkl" android:title="JKL丶" android:key="jkl" android:summary="理事">
+            <intent android:action="android.intent.action.VIEW" android:data="http://www.coolapk.com/u/2096972" />
+        </Preference>
+        <Preference android:icon="@mipmap/ic_team_yaoxiaonie" android:title="SAHA妖小孽" android:key="yaoxiaonie" android:summary="工具人">
+            <intent android:action="android.intent.action.VIEW" android:data="http://www.coolapk.com/u/2369402" />
+        </Preference>
+        <Preference android:icon="@mipmap/ic_team_wrtvd" android:title="WRTVD" android:key="wrtvd" android:summary="工具人" />
+        <Preference android:icon="@mipmap/ic_team_xy" android:title="XY丶血影" android:key="xy" android:summary="协助管理">
+            <intent android:action="android.intent.action.VIEW" android:data="http://www.coolapk.com/u/2833706" />
+        </Preference>
+        <Preference android:icon="@mipmap/ic_team_littlesister" android:title="世纪末雪" android:key="xiaojiejie" android:summary="内核编译">
+            <intent android:action="android.intent.action.VIEW" android:data="http://www.coolapk.com/u/2114437" />
+        </Preference>
+        <Preference android:icon="@mipmap/ic_ming" android:title="水木皆Ming" android:key="shuimujieming" android:summary="高级设置维护者、工具人" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="温馨提示" android:key="readme">
+        <PreferenceScreen android:icon="@mipmap/ic_team" android:key="group" />
+        <PreferenceScreen android:icon="@mipmap/ic_help" android:key="help" />
+    </PreferenceCategory>
+</PreferenceScreen>

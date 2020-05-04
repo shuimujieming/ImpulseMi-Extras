@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:textSize="20.0sp" android:layout_gravity="center" android:id="@id/text_statusbar_a" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="状态栏未展开布局列数" />
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <SeekBar android:id="@id/statusbar_a" android:layout_width="fill_parent" android:layout_height="wrap_content" android:max="10" />
+    </LinearLayout>
+    <TextView android:textSize="20.0sp" android:layout_gravity="center" android:id="@id/text_statusbar_x" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="50.0dip" android:text="状态栏布局列数" />
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <SeekBar android:id="@id/statusbar_x" android:layout_width="fill_parent" android:layout_height="wrap_content" android:max="10" />
+    </LinearLayout>
+    <TextView android:textSize="20.0sp" android:layout_gravity="center" android:id="@id/text_statusbar_y" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="50.0dip" android:text="状态栏布局行数" />
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <SeekBar android:id="@id/statusbar_y" android:layout_width="fill_parent" android:layout_height="wrap_content" android:max="10" />
+    </LinearLayout>
+    <Button android:id="@id/setstatusbar_layout" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="50.0dip" android:text="设置状态栏布局" />
+    <Button android:id="@id/set_default_statusbar_layout" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="50.0dip" android:text="恢复默认状态栏布局" />
+</LinearLayout>

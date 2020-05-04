@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen android:title="ImpulseMi Extras" android:key="common_options" android:layoutDirection="locale"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="系统修改" android:key="system_content">
+        <CheckBoxPreference android:icon="@mipmap/ic_power" android:title="高级电源" android:key="power_advanced" android:defaultValue="0" android:summaryOn="已开启" android:summaryOff="已关闭" />
+        <CheckBoxPreference android:icon="@mipmap/ic_brevent" android:title="黑域" android:key="brevent_active" android:defaultValue="0" android:summaryOn="已激活" android:summaryOff="已关闭" />
+        <CheckBoxPreference android:icon="@mipmap/ic_finger" android:title="开机指纹解锁" android:key="finger_unlock" android:defaultValue="0" />
+        <Preference android:icon="@mipmap/ic_freeze" android:title="应用冻结" android:key="app_freeze">
+            <intent android:targetPackage="com.impulsemi.extras" android:action="android.intent.action.MAIN" android:targetClass="com.impulsemi.extras.FreezeActivity" />
+        </Preference>
+        <Preference android:icon="@mipmap/ic_foot" android:title="运动步数修改" android:key="running_steps" />
+        <Preference android:icon="@mipmap/ic_charge_animation" android:title="充电动画切换" android:key="charge_show" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="音效设置">
+        <CheckBoxPreference android:icon="@mipmap/ic_audio_1" android:title="电源连接音效关闭" android:key="charge_on" />
+        <CheckBoxPreference android:icon="@mipmap/ic_audio_2" android:title="电源断开音效关闭" android:key="charge_off" />
+        <CheckBoxPreference android:icon="@mipmap/ic_audio_3" android:title="无线充电音效关闭" android:key="charge_wireless" />
+        <CheckBoxPreference android:icon="@mipmap/ic_audio_4" android:title="静音切换音效关闭" android:key="Bird_Notification" />
+        <CheckBoxPreference android:icon="@mipmap/ic_audio_5" android:title="低电量音效关闭" android:key="low_power" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="桌面修改">
+        <CheckBoxPreference android:icon="@mipmap/ic_title_dock" android:title="桌面底栏标题" android:key="desktop_bottom_title" />
+        <Preference android:icon="@mipmap/ic_desktop_layout" android:title="桌面布局" android:key="desktop_layout" />
+        <Preference android:icon="@mipmap/ic_baitiao" android:title="小白条修改" android:key="navigation_layout" />
+        <CheckBoxPreference android:icon="@mipmap/ic_title_home" android:title="隐藏桌面图标标题" android:key="desktop_icon_title" />
+        <CheckBoxPreference android:icon="@mipmap/ic_home_shadow" android:title="开启图标阴影" android:key="desktop_icon_shadow" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="息屏设置">
+        <CheckBoxPreference android:icon="@mipmap/ic_weather" android:enabled="true" android:title="息屏天气" android:selectable="true" android:key="aod_weather_active_big" android:defaultValue="0" android:summaryOn="已开启" android:summaryOff="已关闭" />
+        <CheckBoxPreference android:icon="@mipmap/ic_weather_location" android:title="天气地区" android:key="aod_weather_region" />
+        <CheckBoxPreference android:icon="@mipmap/ic_weather_content" android:title="天气情况" android:key="aod_weather_content" />
+        <CheckBoxPreference android:icon="@mipmap/ic_weather_temp" android:title="天气温度" android:key="aod_weather_temp" />
+        <CheckBoxPreference android:icon="@mipmap/ic_colorful" android:title="息屏彩色通知图标切换" android:key="aod_icon_color" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="其它功能">
+        <Preference android:icon="@mipmap/ic_window_animate" android:title="窗口动画缩放速度" android:key="window_animation" />
+        <Preference android:icon="@mipmap/ic_leap_animate" android:title="过渡动画缩放速度" android:key="change_animation" />
+        <Preference android:icon="@mipmap/ic_animation" android:title="Animation动画时长调节" android:key="time_animation" />
+        <Preference android:icon="@mipmap/ic_volume_steps" android:title="自定义音量级数" android:key="vol_set" />
+        <Preference android:icon="@mipmap/ic_monitor_dpi" android:title="修改屏幕密度" android:key="screen_dpi" />
+        <Preference android:icon="@mipmap/ic_notice" android:title="通知日志查看" android:key="notice_diary" />
+        <Preference android:icon="@mipmap/ic_wifi_password" android:title="WIFI密码查看" android:key="wifi_look">
+            <intent android:targetPackage="com.impulsemi.extras" android:action="ACTION_A_INTENT" android:targetClass="com.impulsemi.extras.WifiActivity" />
+        </Preference>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="电池设置">
+        <Preference android:icon="@mipmap/ic_power_mask" android:title="电量伪装" android:key="power_mask" />
+        <Preference android:icon="@mipmap/ic_power_save" android:title="极致省电模式" android:key="power_save">
+            <intent android:targetPackage="com.miui.powerkeeper" android:action="ACTION_A_INTENT" android:targetClass="com.miui.powerkeeper.ui.ExtremePowerEntryActivity" />
+        </Preference>
+        <Preference android:icon="@mipmap/ic_power_line" android:title="耗电折线图" android:key="power_details">
+            <intent android:targetPackage="com.miui.securitycenter" android:action="ACTION_A_INTENT" android:targetClass="com.miui.powercenter.batteryhistory.BatteryHistoryDetailActivity" />
+        </Preference>
+        <Preference android:icon="@mipmap/ic_power_info" android:title="电池信息" android:key="power_info">
+            <intent android:targetPackage="com.android.settings" android:action="ACTION_A_INTENT" android:targetClass="com.android.settings.BatteryInfo" />
+        </Preference>
+    </PreferenceCategory>
+</PreferenceScreen>

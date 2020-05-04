@@ -91,6 +91,8 @@ public String icon_status;
         CheckBoxPreference dis_hd = (CheckBoxPreference) findPreference("dis_hd");
         CheckBoxPreference dis_4g = (CheckBoxPreference) findPreference("dis_4g");
         CheckBoxPreference notification_show = (CheckBoxPreference) findPreference("notification_show");
+        CheckBoxPreference status_bar_switch_hide = (CheckBoxPreference) findPreference("status_bar_switch_hide");
+
 
         //android.intent.action.USER_SWITCHED->原地去世android.net.conn.CONNECTIVITY_CHANGE
         //com.miui.app.ExtraStatusBarManager.TRIGGER_TOGGLE_LOCK锁屏
@@ -98,6 +100,42 @@ public String icon_status;
         //android.intent.action.SIM_STATE_CHANGED手机卡刷新
         //com.miui.app.ExtraStatusBarManager.action_enter_drive_mode进入开车模式
         //com.miui.app.ExtraStatusBarManager.action_leave_drive_mode推出开车模式   headset  volume  airplane  location
+
+        if(key.equals("status_bar_switch_hide"))
+        {
+            if(status_bar_switch_hide.isChecked())
+            {
+                mount();
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/bool name=\"config_showQuickSettingsRow\"/d' /data/system/theme/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"config_showQuickSettingsRow\\\">" + "false" +"<\\/bool>/\" /data/system/theme/theme_values.xml",true);
+
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/bool name=\"config_showQuickSettingsRow\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"config_showQuickSettingsRow\\\">" + "false" +"<\\/bool>/\" /data/system/theme/nightmode/theme_values.xml",true);
+
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui nightmode/theme_values.xml",true);
+
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
+            }
+            else
+            {
+                mount();
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/bool name=\"config_showQuickSettingsRow\"/d' /data/system/theme/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"config_showQuickSettingsRow\\\">" + "true" +"<\\/bool>/\" /data/system/theme/theme_values.xml",true);
+
+                ShellUtils.execCommand("/system/xbin/busybox unzip /data/system/theme/com.android.systemui nightmode/theme_values.xml -o -d /data/system/theme/",true);
+                ShellUtils.execCommand("/system/xbin/busybox sed -i '/bool name=\"config_showQuickSettingsRow\"/d' /data/system/theme/nightmode/theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox  sed -i \"s/<MIUI_Theme_Values>/&\\n    <bool name=\\\"config_showQuickSettingsRow\\\">" + "true" +"<\\/bool>/\" /data/system/theme/nightmode/theme_values.xml",true);
+
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui nightmode/theme_values.xml",true);
+
+                ShellUtils.execCommand("cd /data/system/theme\n/system/xbin/zip /data/system/theme/com.android.systemui theme_values.xml",true);
+                ShellUtils.execCommand("/system/xbin/busybox killall com.android.systemui", true);
+            }
+        }
         if(key.equals("notification_show"))
         {
             if (notification_show.isChecked())
@@ -298,7 +336,6 @@ public String icon_status;
                                     break;
                             }
                         }
-
                     })
                     .setTitle("双排网速")
                     .setCancelable(true)
@@ -314,10 +351,18 @@ public String icon_status;
                         @Override
                         public void onClick(DialogInterface dialog, int which)
                         {
-                            Settings.System.putString(getContext().getContentResolver(),"impulse_network_sign_up",editText.getText().toString());//使用前必须给定值，否则不许打开
-                            int nowon = Settings.System.getInt(getContext().getContentResolver(),"status_bar_network_traffic_style",0);
-                            Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",nowon+1);
-                            Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",nowon);
+                            if(editText.getText().toString().equals(""))
+                            {
+                                Toast.makeText(getContext(),"请输入修改的文字！不能为空！",Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                            {
+                                Settings.System.putString(getContext().getContentResolver(),"impulse_network_sign_up",editText.getText().toString());//使用前必须给定值，否则不许打开
+                                int nowon = Settings.System.getInt(getContext().getContentResolver(),"status_bar_network_traffic_style",0);
+                                Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",nowon+1);
+                                Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",nowon);
+                            }
+
                         }
                     })
                     .setNegativeButton("还原", new DialogInterface.OnClickListener() {
@@ -327,6 +372,8 @@ public String icon_status;
                             int nowon = Settings.System.getInt(getContext().getContentResolver(),"status_bar_network_traffic_style",0);
                             Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",nowon+1);
                             Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",nowon);
+                            Toast.makeText(getContext(),"还原成功！",Toast.LENGTH_SHORT).show();
+
                         }
                     })
                     .setTitle("双排网速上传箭头自定义")
@@ -343,10 +390,17 @@ public String icon_status;
                         @Override
                         public void onClick(DialogInterface dialog, int which)
                         {
-                            Settings.System.putString(getContext().getContentResolver(),"impulse_network_sign_down",editText.getText().toString());//使用前必须给定值，否则不许打开
-                            int nowon = Settings.System.getInt(getContext().getContentResolver(),"status_bar_network_traffic_style",0);
-                            Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",nowon+1);
-                            Settings.System.putInt(getContext().getContentResolver(),"status_bar_network_traffic_style",nowon);
+                            if(editText.getText().toString().equals(""))
+                            {
+                                Toast.makeText(getContext(),"请输入修改的文字！不能为空！",Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Settings.System.putString(getContext().getContentResolver(),"impulse_network_sign_down",editText.getText().toString());//使用前必须给定值，否则不许打开
+                                int nowon = Settings.System.getInt(getContext().getContentResolver(), "status_bar_network_traffic_style", 0);
+                                Settings.System.putInt(getContext().getContentResolver(), "status_bar_network_traffic_style", nowon + 1);
+                                Settings.System.putInt(getContext().getContentResolver(), "status_bar_network_traffic_style", nowon);
+                                Toast.makeText(getContext(),"还原成功！",Toast.LENGTH_SHORT).show();
+                            }
                         }
                     })
                     .setNegativeButton("还原", new DialogInterface.OnClickListener() {
@@ -362,7 +416,6 @@ public String icon_status;
                     .setCancelable(true)
                     .show();
         }
-        miui.os.SystemProperties.getInt("what",0);
         if (key.equals("show_telecom"))
         {
             if (show_telecom.isChecked())

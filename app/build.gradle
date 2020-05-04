@@ -19,15 +19,22 @@ android {
         versionName "1.0"
        // testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    buildTypes {
+        debug{
+
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
 
     repositories {
-
         //添加一个本地仓库，并把libs目录作为仓库的地址
-
         flatDir {
-
             dirs 'libs'
-
         }
 
     }
@@ -73,4 +80,5 @@ buildscript {
 }
 
 // make sure this line comes *after* you apply the Android plugin
-apply plugin: 'com.getkeepsafe.dexcount'
+apply plugin: 'com.getkeepsafe.dexcount'//计算代码类与方法
+

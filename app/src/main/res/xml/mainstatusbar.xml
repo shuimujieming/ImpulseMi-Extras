@@ -45,6 +45,10 @@
             android:key="statusbar_layout" />
         <CheckBoxPreference
             android:icon="@mipmap/ic_telecom"
+            android:title="开关下拉隐藏"
+            android:key="status_bar_switch_hide" />
+        <CheckBoxPreference
+            android:icon="@mipmap/ic_telecom"
             android:title="显示运营商"
             android:key="show_telecom" />
         <CheckBoxPreference

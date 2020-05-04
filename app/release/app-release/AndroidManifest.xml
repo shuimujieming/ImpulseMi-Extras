@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?><manifest xmlns:android="http://schemas.android.com/apk/res/android" android:compileSdkVersion="29" android:compileSdkVersionCodename="10" android:sharedUserId="android.uid.system" package="com.impulsemi.extras" platformBuildVersionCode="29" platformBuildVersionName="10">
+    <uses-permission android:name="android.permission.FORCE_STOP_PACKAGES"/>
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <application android:allowBackup="true" android:appComponentFactory="androidx.core.app.CoreComponentFactory" android:icon="@mipmap/ic_launcher" android:label="@string/app_name" android:process="com.android.settings" android:roundIcon="@mipmap/ic_launcher_round" android:supportsRtl="true" android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:excludeFromRecents="true" android:name="com.impulsemi.extras.FreezeActivity"/>
+        <activity android:excludeFromRecents="true" android:name="com.impulsemi.extras.NavigationlayoutActivity"/>
+        <activity android:excludeFromRecents="true" android:name="com.impulsemi.extras.FilterListViewActivity"/>
+        <activity android:excludeFromRecents="true" android:name="com.impulsemi.extras.WifiActivity"/>
+        <activity android:excludeFromRecents="true" android:name="com.impulsemi.extras.DesktoplayoutActivity"/>
+        <activity android:excludeFromRecents="true" android:name="com.impulsemi.extras.StatusbarlayoutActivity"/>
+        <activity android:excludeFromRecents="false" android:name="com.impulsemi.extras.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <data android:host="MainActivity" android:scheme="com.impulsemi.extras"/>
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
